@@ -10,9 +10,9 @@
   padding-bottom: 60px;
 }
 
-.page, .content, img, div, h1, h2, h3, p, ul, li, nav, section {
+/* .page, .content, img, div, h1, h2, h3, p, ul, li, nav, section {
   outline: red 1px dashed;
-}
+} */
 
 @media (max-width: 918px) {
   .page {

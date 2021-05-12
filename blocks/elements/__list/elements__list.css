@@ -8,3 +8,19 @@
   padding: 0;
   list-style-type: none;
 }
+
+@media (max-width: 918px) {
+  .elements__list {
+    grid-template-columns: repeat(2, 282px);
+    grid-template-rows: repeat(3, 361px);
+  }
+}
+
+@media (max-width: 619px) {
+  .elements__list {
+    grid-template-columns: 282px;
+    grid-template-rows: repeat(6, 361px);
+    column-gap: 0;
+    max-width: calc(100vw - 38px);
+  }
+}

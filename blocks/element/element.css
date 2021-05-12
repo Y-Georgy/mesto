@@ -3,3 +3,12 @@
   border-radius: 10px;
   overflow: hidden;
 }
+
+@media (max-width: 918px) {
+  .element {
+    max-width: calc(100vw - 38px);
+  }
+}
+
+
+
