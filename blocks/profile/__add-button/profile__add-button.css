@@ -16,4 +16,11 @@
   transition: opacity .5s ease;
 }
 
+@media (max-width: 918px) {
+  .profile__add-button {
+    width: 100%;
+    max-width: 282px;
+    background-size: 16px;
+  }
+}
 

@@ -1,3 +1,9 @@
 .header__margin {
   margin-bottom: 40px;
 }
+
+@media (max-width: 918px) {
+  .header__margin {
+    margin-bottom: 42px;
+  }
+}

@@ -4,3 +4,10 @@
   width: 100%;
   border-bottom: 1px rgb(84, 84, 84) solid;
 }
+
+@media (max-width: 918px) {
+  .header {
+    max-width: 918px;
+    min-height: 56px;
+  }
+}
