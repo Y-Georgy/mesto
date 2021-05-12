@@ -3,8 +3,8 @@
   font-size: 18px;
   line-height: 1;
   font-weight: 400;
-  /* text-overflow: ellipsis;
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  width: calc(880px - 330px); */
+  max-width: 550px;
 }
