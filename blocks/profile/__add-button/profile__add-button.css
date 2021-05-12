@@ -7,4 +7,13 @@
   outline: 2px #fff solid;
   background: url(../../../images/plus.svg) no-repeat center;
   background-size: 22px;
+  border-radius: 2px;
 }
+
+.profile__add-button:hover {
+  cursor: pointer;
+  opacity: .6;
+  transition: opacity .5s ease;
+}
+
+
