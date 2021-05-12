@@ -15,15 +15,15 @@
   src: url("./font-inter/Inter-Medium.woff2") format("woff2"),
        url("./font-inter/Inter-Medium.woff") format("woff");
 }
-/*
-@font-face {
+
+/* @font-face {
   font-family: 'Inter';
   font-style:  normal;
   font-weight: 700;
   font-display: swap;
   src: url(./font-inter/Inter-Bold.woff2) format("woff2"),
        url(./font-inter/Inter-Bold.woff) format("woff");
-}
+} */
 
 @font-face {
   font-family: 'Inter';
@@ -32,5 +32,5 @@
   font-display: swap;
   src: url(./font-inter/Inter-Black.woff2) format("woff2"),
        url(./font-inter/Inter-Black.woff) format("woff");
-} */
+}
 

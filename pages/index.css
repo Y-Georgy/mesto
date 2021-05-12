@@ -19,3 +19,14 @@
 @import url(../blocks/profile/__text/profile__text.css);
 @import url(../blocks/profile/__edit-button/profile__edit-button.css);
 @import url(../blocks/profile/__add-button/profile__add-button.css);
+
+/* elements */
+@import url(../blocks/elements/elements.css);
+@import url(../blocks/elements/__list/elements__list.css);
+
+/* element */
+@import url(../blocks/element/element.css);
+@import url(../blocks/element/__img/element__img.css);
+@import url(../blocks/element/__name-overlay/element__name-overlay.css);
+@import url(../blocks/element/__title/element__title.css);
+@import url(../blocks/element/__icon-like/element__icon-like.css);
