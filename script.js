@@ -5,30 +5,30 @@ function openPopup () {
   let popupWindow = popup.querySelector('.popup__window');
   let profileTitle = profile.querySelector('.profile__title');
   let profileSubtitle = profile.querySelector('.profile__sublitle');
-  let popupTitle = profile.querySelector('.popup__title');
-  let popupSubtitle = profile.querySelector('.popup__subtitle');
+  let popupInputTitle = profile.querySelector('.popup__input-title');
+  let popupInputSubtitle = profile.querySelector('.popup__input-subtitle');
   popup.classList.remove('popup_disabled');
   popupWindow.classList.remove('popup__window_disabled');
-  popupTitle.textContent = profileTitle.textContent;
-  popupSubtitle.textContent = profileSubtitle.textContent;
+  popupInputTitle.setAttribute('value', profileTitle.textContent);
+  popupInputSubtitle.setAttribute('value', profileSubtitle.textContent);
 }
 
 function closePopup () {
   let popup = profile.querySelector('.popup');
   let popupWindow = popup.querySelector('.popup__window');
-  //if (popup.classList.contains('popup_disabled') === false) {
-    popup.classList.add('popup_disabled');
-    popupWindow.classList.add('popup__window_disabled');
-  //}
+  popup.classList.add('popup_disabled');
+  popupWindow.classList.add('popup__window_disabled');
 }
 
 function savePopupInfo () {
-  let popupTitle = profile.querySelector('.popup__title');
-  let popupSubtitle = profile.querySelector('.popup__subtitle');
+  let popupInputTitle = profile.querySelector('.popup__input-title');
+  let popupInputSubtitle = profile.querySelector('.popup__input-subtitle');
   let profileTitle = profile.querySelector('.profile__title');
   let profileSubtitle = profile.querySelector('.profile__sublitle');
-  profileTitle.textContent = popupTitle.textContent;
-  profileSubtitle.textContent = popupSubtitle.textContent;
+  profileTitle.textContent = popupInputTitle.value;
+  profileSubtitle.textContent = popupInputSubtitle.value;
+  console.log(popupInputTitle.value);
+  console.log(popupInputSubtitle.value);
   closePopup ();
 }
 
