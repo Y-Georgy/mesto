@@ -10,8 +10,8 @@
 }
 
 .profile__edit-button:hover {
-opacity: .6;
-transition: opacity .5s ease;
+  opacity: .6;
+  transition: opacity .5s ease;
 }
 
 @media (max-width: 918px) {
