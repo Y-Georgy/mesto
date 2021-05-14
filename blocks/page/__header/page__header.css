@@ -1,9 +1,9 @@
-.header__margin {
+.page__header {
   margin-bottom: 40px;
 }
 
 @media (max-width: 918px) {
-  .header__margin {
+  .page__header {
     margin-bottom: 42px;
   }
 }

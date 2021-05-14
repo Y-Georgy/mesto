@@ -1,10 +1,15 @@
+/* normalize */
 @import url(../vendor/normalize.css);
+
+/* fonts */
 @import url(../vendor/fonts.css);
+
+/* page */
 @import url(../blocks/page/page.css);
+@import url(../blocks/page/__header/page__header.css);
 
 /* header */
 @import url(../blocks/header/header.css);
-@import url(../blocks/header/__margin/header__margin.css);
 @import url(../blocks/header/__logo/header__logo.css);
 
 /* main */
