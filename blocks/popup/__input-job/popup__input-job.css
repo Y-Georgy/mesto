@@ -1,4 +1,4 @@
-.popup__input-subtitle {
+.popup__input-job {
   width: 100%;
   border: none;
   border-bottom: #ccc 1px solid;
@@ -10,7 +10,7 @@
 }
 
 @media (max-width: 525px) {
-  .popup__input-subtitle {
+  .popup__input-job {
     margin-bottom: 45px;
   }
 }
