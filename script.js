@@ -27,8 +27,6 @@ function savePopupInfo () {
   let profileSubtitle = profile.querySelector('.profile__sublitle');
   profileTitle.textContent = popupInputTitle.value;
   profileSubtitle.textContent = popupInputSubtitle.value;
-  console.log(popupInputTitle.value);
-  console.log(popupInputSubtitle.value);
   closePopup ();
 }
 
