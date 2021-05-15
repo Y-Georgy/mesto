@@ -9,81 +9,85 @@
 </head>
 <body class="page">
   <header class="header page__header">
-    <img src="./images/logo.svg" alt="Логотип" class="header__logo">
+    <img src="./images/logo.svg" alt="Логотип Mesto" class="header__logo">
   </header>
   <main class="content">
     <section class="profile">
       <div class="profile__author">
-        <img class="profile__avatar" src="./images/kysto.jpg" alt="Фото Жак-Ив Кусто">
+        <img class="profile__avatar" src="./images/kysto.jpg" alt="Аватар автора">
         <div class="profile__text">
           <div class="profile__title-overlay">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
-            <a class="profile__edit-button" href="#"></a>
+            <button type="button" class="profile__edit-button" href="#" aria-label="Редактировать"></button>
           </div>
           <p class="profile__sublitle">Исследователь океана</p>
         </div>
       </div>
-      <button class="profile__add-button"></button>
-      <div class="popup">
-        <form class="popup__container">
-          <img src="./images/icon-close.svg" alt="Иконка закрыть" class="popup__icon-close">
-          <h2 class="popup__heading">Редактировать профиль</h2>
-          <input type="text" class="popup__input-name">
-          <input type="text" class="popup__input-job">
-          <button type="submit" class="popup__submit-button">Сохранить</button>
-        </form>
-      </div>
+      <button type="button" class="profile__add-button" aria-label="Добавить"></button>
     </section>
     <section class="elements">
       <ul class="elements__list">
         <li class="element">
-          <img src="./images/elements/baikal.jpg" alt="Байкал" class="element__img">
+          <img src="./images/elements/baikal.jpg" alt="Озеро Байкал" class="element__img">
           <div class="element__name-overlay">
             <h2 class="element__title">Озеро Байкал</h2>
-            <a href="#" class="element__icon-like"></a>
+            <button type="button" class="element__icon-like" aria-label="Нравиться"></button>
           </div>
         </li>
         <li class="element">
           <img src="./images/elements/barencevo-sea.jpg" alt="Баренцево море" class="element__img">
           <div class="element__name-overlay">
             <h2 class="element__title">Баренцево море Северного Ледовитого океана</h2>
-            <a href="#" class="element__icon-like"></a>
+            <button type="button" class="element__icon-like" aria-label="Нравиться"></button>
           </div>
         </li>
         <li class="element">
           <img src="./images/elements/elbrus.jpg" alt="Гора Эльбрус" class="element__img">
           <div class="element__name-overlay">
             <h2 class="element__title">Гора Эльбрус</h2>
-            <a href="#" class="element__icon-like"></a>
+            <button type="button" class="element__icon-like" aria-label="Нравиться"></button>
           </div>
         </li>
         <li class="element">
           <img src="./images/elements/kareliya.jpg" alt="Карелия" class="element__img">
           <div class="element__name-overlay">
             <h2 class="element__title">Карелия</h2>
-            <a href="#" class="element__icon-like"></a>
+            <button type="button" class="element__icon-like" aria-label="Нравиться"></button>
           </div>
         </li>
         <li class="element">
           <img src="./images/elements/karpati.jpg" alt="Карпаты" class="element__img">
           <div class="element__name-overlay">
             <h2 class="element__title">Карпаты</h2>
-            <a href="#" class="element__icon-like"></a>
+            <button type="button" class="element__icon-like" aria-label="Нравиться"></button>
           </div>
         </li>
         <li class="element">
-          <img src="./images/elements/ural.jpg" alt="Урал" class="element__img">
+          <img src="./images/elements/ural.jpg" alt="Уральские горы" class="element__img">
           <div class="element__name-overlay">
-            <h2 class="element__title">Урал</h2>
-            <a href="#" class="element__icon-like"></a>
+            <h2 class="element__title">Уральские горы</h2>
+            <button type="button" class="element__icon-like" aria-label="Нравиться"></button>
           </div>
         </li>
       </ul>
     </section>
-    <footer class="footer">
-      <p class="footer__text">© 2021 Mesto Russia</p>
-    </footer>
   </main>
-  <script src="./script.js"></script>
+  <footer class="footer">
+    <p class="footer__text">© 2021 Mesto Russia</p>
+  </footer>
+  <div class="popup">
+    <form method="POST" class="popup__container" name="formAuthor">
+      <button type="button" class="popup__icon-close" aria-label="Закрыть"></button>
+      <h3 class="popup__heading">Редактировать профиль</h3>
+      <input placeholder="Имя" type="text" class="popup__input-name" name="authorName">
+      <input placeholder="О себе" type="text" class="popup__input-job" name="authorJob">
+      <button type="submit" class="popup__submit-button">Сохранить</button>
+    </form>
+  </div>
+  <script src="./scripts/script.js"></script>
 </body>
 </html>
+<!-- Nikita Zhmaev, большое спасибо за такое подробное ревью!
+Интересная информация по заполнению alt и aria-label.
+Модальное окно в попапе через flex гораздо лучше выравнивается на разных экранах, спасибо за совет! :D -->
+

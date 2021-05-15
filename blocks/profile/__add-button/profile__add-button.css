@@ -5,6 +5,7 @@
   padding: 0;
   background-color: transparent;
   outline: 2px #fff solid;
+  border: none;
   background: url(../../../images/plus.svg) no-repeat center;
   background-size: 22px;
   border-radius: 2px;

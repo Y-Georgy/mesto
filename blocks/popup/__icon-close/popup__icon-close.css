@@ -5,6 +5,10 @@
   width: 56px;
   height: 56px;
   transition: transform 1s ease;
+  background-color: transparent;
+  background: url(../../../images/icon-close.svg) center no-repeat;
+  border: none;
+
 }
 
 .popup__icon-close:hover {
