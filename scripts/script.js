@@ -64,7 +64,7 @@ const elementsList = document.querySelector('.elements__list');
 
 // проходимся по массиву, берем и добавляем данные в новый массив и выводим на страницу
 initialCards.forEach( item => {
-  const userElement = elementTemplate.querySelector('.element').cloneNode(true); // клонируем
+  const userElement = elementTemplate.querySelector('.element').cloneNode(true);
   userElement.querySelector('.element__img').src = item.link;
   userElement.querySelector('.element__img').alt = item.name;
   userElement.querySelector('.element__title').textContent = item.name;
@@ -74,7 +74,7 @@ initialCards.forEach( item => {
 // добавление новой карточки
 function submitFormCard (evt) {
   evt.preventDefault();
-  const userElement = elementTemplate.querySelector('.element').cloneNode(true); // клонируем
+  const userElement = elementTemplate.querySelector('.element').cloneNode(true);
   userElement.querySelector('.element__img').src = linkInput.value;
   userElement.querySelector('.element__img').alt = titleInput.value;
   userElement.querySelector('.element__title').textContent = titleInput.value;
