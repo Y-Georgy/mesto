@@ -18,7 +18,7 @@ const popupTypeAdd = document.querySelector('.popup_type_add');
 const titleInput = popupTypeAdd.querySelector('.popup__input_type_title');
 const linkInput = popupTypeAdd.querySelector('.popup__input_type_link');
 // кнопки попапа добавления карточки
-const buttonClosePopupTypeAdd = popupTypeAdd.querySelector('.popup__icon-close')
+const buttonClosePopupTypeAdd = popupTypeAdd.querySelector('.popup__icon-close');
 const formElementPopupTypeAdd = popupTypeAdd.querySelector('.popup__container');
 
 // попап изображения карточки

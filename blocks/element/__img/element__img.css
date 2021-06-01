@@ -11,3 +11,9 @@
     min-width: 100px;
   }
 }
+
+.element__img:hover {
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity .3s ease;
+}
