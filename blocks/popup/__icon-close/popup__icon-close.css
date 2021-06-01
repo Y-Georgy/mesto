@@ -16,7 +16,7 @@
   cursor: pointer;
   transform: rotate(-90deg);
   opacity: .6;
-  transition: opacity 1s ease, transform 1s ease;
+  transition: opacity .6s ease, transform .6s ease;
 }
 
 @media (max-width: 525px) {
