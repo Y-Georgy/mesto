@@ -21,6 +21,13 @@ const linkInput = popupTypeAdd.querySelector('.popup__input_type_link');
 const buttonClosePopupTypeAdd = popupTypeAdd.querySelector('.popup__icon-close')
 const formElementPopupTypeAdd = popupTypeAdd.querySelector('.popup__container');
 
+// попап изображения карточки
+const popupTypeImage = document.querySelector('.popup_type_image');
+const popupImage = popupTypeImage.querySelector('.popup__image');
+const popupImageSignature = popupTypeImage.querySelector('.popup__image-signature');
+const buttonClosePopupTypeImage = popupTypeImage.querySelector('.popup__icon-close');
+
+
 // массив с данными карточек elements
 const initialCards = [
   {
@@ -87,9 +94,20 @@ elementsList.addEventListener('click', evt => {
 elementsList.addEventListener('click', evt => {
   const eventTarget = evt.target;
   if (eventTarget.classList.contains('element__icon-delete')) {
-    console.log(eventTarget);
     const elementDelete = eventTarget.closest('.element');
     elementDelete.remove();
+  }
+});
+
+// popup image
+elementsList.addEventListener('click', evt => {
+  const eventTarget = evt.target;
+  if (eventTarget.classList.contains('element__img')) {
+
+    popupImage.src = eventTarget.src;
+    popupImage.alt = eventTarget.alt;
+    popupImageSignature.textContent = eventTarget.alt;
+    openPopup(popupTypeImage);
   }
 });
 
@@ -135,3 +153,8 @@ buttonClosePopupTypeAdd.addEventListener('click', () => {
   closePopup(popupTypeAdd);
 });
 formElementPopupTypeAdd.addEventListener('submit', submitFormCard);
+
+// слушатели кнопок попапа изображения карточки
+buttonClosePopupTypeImage.addEventListener('click', () => {
+  closePopup(popupTypeImage);
+});
