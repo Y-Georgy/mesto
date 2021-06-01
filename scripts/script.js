@@ -13,7 +13,8 @@ const editButton = profile.querySelector('.profile__edit-button');
 const closeButton = popup.querySelector('.popup__icon-close');
 const formElement = popup.querySelector('.popup__container');
 
-// массив с данными карточек
+
+// массив с данными карточек elements
 const initialCards = [
   {
     name: 'Архыз',
@@ -41,6 +42,21 @@ const initialCards = [
   }
 ];
 
+// Берем блок template element
+const elementTemplate = document.querySelector('.element-template').content;
+
+// Берем блок ul.elements__list
+const elementsList = document.querySelector('.elements__list');
+
+// проходимся по массиву, берем и добавляем данные в новый массив и выводим на страницу
+initialCards.forEach( item => {
+  const userElement = elementTemplate.querySelector('.element').cloneNode(true); // клонируем
+  userElement.querySelector('.element__img').src = item.link;
+  userElement.querySelector('.element__img').alt = item.name;
+  userElement.querySelector('.element__title').textContent = item.name;
+  elementsList.append(userElement);
+});
+
 // открытие попапа
 function openPopup () {
   nameInput.value = profileTitle.textContent;
@@ -53,7 +69,7 @@ function closePopup () {
   popup.classList.remove('popup_opened');
 }
 
-// сохранение
+// сохранение данных автора
 function formSubmitHandler (evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;

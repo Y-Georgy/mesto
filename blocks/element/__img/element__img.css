@@ -1,7 +1,7 @@
 .element__img {
   width: 100%;
   min-width: 282px;
-  min-height: 282px;
+  height: 282px;
   object-fit: cover;
   object-position: center;
 }

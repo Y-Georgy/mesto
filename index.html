@@ -27,7 +27,7 @@
     </section>
     <section class="elements">
       <ul class="elements__list">
-        <li class="element">
+        <!-- <li class="element">
           <img src="./images/elements/baikal.jpg" alt="Озеро Байкал" class="element__img">
           <div class="element__name-overlay">
             <h2 class="element__title">Озеро Байкал</h2>
@@ -68,7 +68,7 @@
             <h2 class="element__title">Уральские горы</h2>
             <button type="button" class="element__icon-like" aria-label="Нравиться"></button>
           </div>
-        </li>
+        </li> -->
       </ul>
     </section>
   </main>
@@ -84,6 +84,15 @@
       <button type="submit" class="popup__submit-button">Сохранить</button>
     </form>
   </div>
+  <template class="element-template">
+    <li class="element">
+      <img class="element__img">
+      <div class="element__name-overlay">
+        <h2 class="element__title"></h2>
+        <button type="button" class="element__icon-like" aria-label="Нравиться"></button>
+      </div>
+    </li>
+  </template>
   <script src="./scripts/script.js"></script>
 </body>
 </html>
