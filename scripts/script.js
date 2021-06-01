@@ -2,16 +2,22 @@
 const profile = document.querySelector('.profile');
 const profileTitle = profile.querySelector('.profile__title');
 const profileSubtitle = profile.querySelector('.profile__sublitle');
+const buttonEdit = profile.querySelector('.profile__edit-button');
+const buttonAdd = profile.querySelector('.profile__add-button');
 
-// попап для ввода данных автора
-const popup = document.querySelector('.popup');
-const nameInput = popup.querySelector('.popup__input-name');
-const jobInput = popup.querySelector('.popup__input-job');
+// попап редактирования профиля
+const popupTypeEdit = document.querySelector('.popup_type_edit');
+const nameInput = popupTypeEdit.querySelector('.popup__input-name');
+const jobInput = popupTypeEdit.querySelector('.popup__input-job');
+// кнопки попапа редактирования профиля
+const buttonClosePopupTypeEdit = popupTypeEdit.querySelector('.popup__icon-close');
+const formElementPopupTypeEdit = popupTypeEdit.querySelector('.popup__container');
 
-// кнопки
-const editButton = profile.querySelector('.profile__edit-button');
-const closeButton = popup.querySelector('.popup__icon-close');
-const formElement = popup.querySelector('.popup__container');
+// попап добавления карточки
+const popupTypeAdd = document.querySelector('.popup_type_add');
+// кнопки попапа добавления карточки
+const buttonClosePopupTypeAdd = popupTypeAdd.querySelector('.popup__icon-close')
+
 
 
 // массив с данными карточек elements
@@ -58,15 +64,20 @@ initialCards.forEach( item => {
 });
 
 // открытие попапа
-function openPopup () {
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileSubtitle.textContent;
-  popup.classList.add('popup_opened');
+function openPopup (popupType) {
+  popupType.classList.add('popup_opened');
 }
 
 // закрытие попапа
-function closePopup () {
-  popup.classList.remove('popup_opened');
+function closePopup (popupType) {
+  popupType.classList.remove('popup_opened');
+}
+
+// передаем данные профиля в инпуты попапа редактирования профиля
+function editValuePopupTypeEdit () {
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileSubtitle.textContent;
+  openPopup (popupTypeEdit);
 }
 
 // сохранение данных автора
@@ -74,10 +85,19 @@ function formSubmitHandler (evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
   profileSubtitle.textContent = jobInput.value;
-  closePopup();
+  closePopup(popupTypeEdit);
 }
 
 // слушатели
-editButton.addEventListener('click', openPopup);
-closeButton.addEventListener('click', closePopup);
-formElement.addEventListener('submit', formSubmitHandler);
+buttonEdit.addEventListener('click', editValuePopupTypeEdit);
+buttonClosePopupTypeEdit.addEventListener('click', () => {
+  closePopup(popupTypeEdit);
+});
+formElementPopupTypeEdit.addEventListener('submit', formSubmitHandler);
+
+buttonAdd.addEventListener('click', () => {
+  openPopup(popupTypeAdd);
+});
+buttonClosePopupTypeAdd.addEventListener('click', () => {
+  closePopup(popupTypeAdd);
+});
