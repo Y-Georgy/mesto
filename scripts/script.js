@@ -65,6 +65,17 @@ initialCards.forEach( item => {
   elementsList.append(userElement);
 });
 
+// добавление новой карточки
+function submitFormCard (evt) {
+  evt.preventDefault();
+  const userElement = elementTemplate.querySelector('.element').cloneNode(true); // клонируем
+  userElement.querySelector('.element__img').src = linkInput.value;
+  userElement.querySelector('.element__img').alt = titleInput.value;
+  userElement.querySelector('.element__title').textContent = titleInput.value;
+  elementsList.prepend(userElement);
+  closePopup(popupTypeAdd);
+}
+
 // открытие попапа
 function openPopup (popupType) {
   popupType.classList.add('popup_opened');
@@ -88,11 +99,6 @@ function submitFormAuthor (evt) {
   profileTitle.textContent = nameInput.value;
   profileSubtitle.textContent = jobInput.value;
   closePopup(popupTypeEdit);
-}
-
-// добавление новой карточки
-function submitFormCard () {
-  closePopup(popupTypeAdd);
 }
 
 // слушатели кнопок профиля
