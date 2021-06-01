@@ -21,7 +21,6 @@ const linkInput = popupTypeAdd.querySelector('.popup__input_type_link');
 const buttonClosePopupTypeAdd = popupTypeAdd.querySelector('.popup__icon-close')
 const formElementPopupTypeAdd = popupTypeAdd.querySelector('.popup__container');
 
-
 // массив с данными карточек elements
 const initialCards = [
   {
@@ -75,6 +74,24 @@ function submitFormCard (evt) {
   elementsList.prepend(userElement);
   closePopup(popupTypeAdd);
 }
+
+// like card
+elementsList.addEventListener('click', evt => {
+  const eventTarget = evt.target;
+  if (eventTarget.classList.contains('element__icon-like')) {
+    eventTarget.classList.toggle('element__icon-like_active');
+  }
+});
+
+// delete card
+elementsList.addEventListener('click', evt => {
+  const eventTarget = evt.target;
+  if (eventTarget.classList.contains('element__icon-delete')) {
+    console.log(eventTarget);
+    const elementDelete = eventTarget.closest('.element');
+    elementDelete.remove();
+  }
+});
 
 // открытие попапа
 function openPopup (popupType) {
