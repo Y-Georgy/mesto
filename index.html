@@ -76,20 +76,20 @@
     <p class="footer__text">© 2021 Mesto Russia</p>
   </footer>
   <div class="popup popup_type_edit">
-    <form method="post" class="popup__container" name="formAuthor">
+    <form method="POST" class="popup__container" name="formAuthor">
       <button type="reset" class="popup__icon-close" aria-label="Закрыть"></button>
       <h3 class="popup__heading">Редактировать профиль</h3>
-      <input placeholder="Имя" type="text" class="popup__input-name" name="authorName">
-      <input placeholder="О себе" type="text" class="popup__input-job" name="authorJob">
+      <input placeholder="Имя" type="text" class="popup__input popup__input_type_name" name="authorName">
+      <input placeholder="О себе" type="text" class="popup__input popup__input_type_job" name="authorJob">
       <button type="submit" class="popup__submit-button">Сохранить</button>
     </form>
   </div>
   <div class="popup popup_type_add">
-    <form method="post" class="popup__container" name="">
+    <form method="POST" class="popup__container" name="formCard">
       <button type="reset" class="popup__icon-close" aria-label="Закрыть"></button>
       <h3 class="popup__heading">Новое место</h3>
-      <input placeholder="Название" type="text" class="popup__input-name" name="">
-      <input placeholder="Ссылка на картинку" type="text" class="popup__input-job" name="">
+      <input placeholder="Название" type="text" class="popup__input popup__input_type_title" value="Название" name="cardTitle">
+      <input placeholder="Ссылка на картинку" type="text" class="popup__input popup__input_type_link" value="Ссылка" name="cardLink">
       <button type="submit" class="popup__submit-button">Создать</button>
     </form>
   </div>

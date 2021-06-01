@@ -7,17 +7,19 @@ const buttonAdd = profile.querySelector('.profile__add-button');
 
 // попап редактирования профиля
 const popupTypeEdit = document.querySelector('.popup_type_edit');
-const nameInput = popupTypeEdit.querySelector('.popup__input-name');
-const jobInput = popupTypeEdit.querySelector('.popup__input-job');
+const nameInput = popupTypeEdit.querySelector('.popup__input_type_name');
+const jobInput = popupTypeEdit.querySelector('.popup__input_type_job');
 // кнопки попапа редактирования профиля
 const buttonClosePopupTypeEdit = popupTypeEdit.querySelector('.popup__icon-close');
 const formElementPopupTypeEdit = popupTypeEdit.querySelector('.popup__container');
 
 // попап добавления карточки
 const popupTypeAdd = document.querySelector('.popup_type_add');
+const titleInput = popupTypeAdd.querySelector('.popup__input_type_title');
+const linkInput = popupTypeAdd.querySelector('.popup__input_type_link');
 // кнопки попапа добавления карточки
 const buttonClosePopupTypeAdd = popupTypeAdd.querySelector('.popup__icon-close')
-
+const formElementPopupTypeAdd = popupTypeAdd.querySelector('.popup__container');
 
 
 // массив с данными карточек elements
@@ -81,23 +83,32 @@ function editValuePopupTypeEdit () {
 }
 
 // сохранение данных автора
-function formSubmitHandler (evt) {
+function submitFormAuthor (evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
   profileSubtitle.textContent = jobInput.value;
   closePopup(popupTypeEdit);
 }
 
-// слушатели
+// добавление новой карточки
+function submitFormCard () {
+  closePopup(popupTypeAdd);
+}
+
+// слушатели кнопок профиля
 buttonEdit.addEventListener('click', editValuePopupTypeEdit);
+
+// слушатели кнопок попапа редактирования профиля
+formElementPopupTypeEdit.addEventListener('submit', submitFormAuthor);
 buttonClosePopupTypeEdit.addEventListener('click', () => {
   closePopup(popupTypeEdit);
 });
-formElementPopupTypeEdit.addEventListener('submit', formSubmitHandler);
 
+// слушатели кнопок попапа добавления карточки
 buttonAdd.addEventListener('click', () => {
   openPopup(popupTypeAdd);
 });
 buttonClosePopupTypeAdd.addEventListener('click', () => {
   closePopup(popupTypeAdd);
 });
+formElementPopupTypeAdd.addEventListener('submit', submitFormCard);
