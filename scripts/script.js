@@ -62,23 +62,29 @@ const elementTemplate = document.querySelector('.element-template').content;
 // Берем блок ul.elements__list
 const elementsList = document.querySelector('.elements__list');
 
-// проходимся по массиву, берем и добавляем данные в новый массив и выводим на страницу
-initialCards.forEach( item => {
-  const userElement = elementTemplate.querySelector('.element').cloneNode(true);
-  userElement.querySelector('.element__img').src = item.link;
-  userElement.querySelector('.element__img').alt = item.name;
-  userElement.querySelector('.element__title').textContent = item.name;
-  elementsList.append(userElement);
-});
+// генерируем элементы
+function renderElements() {
+  initialCards.forEach(function (item) {
+      renderElement(item.name, item.link)
+    });
+}
 
-// добавление новой карточки
+// генерируем элемент
+function renderElement(title, link) {
+  const userElement = elementTemplate.querySelector('.element').cloneNode(true);
+  userElement.querySelector('.element__img').src = link;
+  userElement.querySelector('.element__img').alt = title;
+  userElement.querySelector('.element__title').textContent = title;
+  elementsList.prepend(userElement);
+}
+
+// вызываем функцию генерирования первоначальных элементов
+renderElements();
+
+// добавление нового элемента
 function submitFormCard (evt) {
   evt.preventDefault();
-  const userElement = elementTemplate.querySelector('.element').cloneNode(true);
-  userElement.querySelector('.element__img').src = linkInput.value;
-  userElement.querySelector('.element__img').alt = titleInput.value;
-  userElement.querySelector('.element__title').textContent = titleInput.value;
-  elementsList.prepend(userElement);
+  renderElement(titleInput.value, linkInput.value);
   closePopup(popupTypeAdd);
 }
 
@@ -103,7 +109,6 @@ elementsList.addEventListener('click', evt => {
 elementsList.addEventListener('click', evt => {
   const eventTarget = evt.target;
   if (eventTarget.classList.contains('element__img')) {
-
     popupImage.src = eventTarget.src;
     popupImage.alt = eventTarget.alt;
     popupImageSignature.textContent = eventTarget.alt;
