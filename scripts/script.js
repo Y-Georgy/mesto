@@ -63,13 +63,22 @@ const elementTemplate = document.querySelector('.element-template').content;
 const elementsList = document.querySelector('.elements__list');
 
 // проходимся по массиву, берем и добавляем данные в новый массив и выводим на страницу
-initialCards.forEach( item => {
+
+function renderElements() {
+  initialCards.forEach(function (item) {
+      renderElement(item.name, item.link)
+    });
+}
+
+function renderElement(title, link) {
   const userElement = elementTemplate.querySelector('.element').cloneNode(true);
-  userElement.querySelector('.element__img').src = item.link;
-  userElement.querySelector('.element__img').alt = item.name;
-  userElement.querySelector('.element__title').textContent = item.name;
+  userElement.querySelector('.element__img').src = link;
+  userElement.querySelector('.element__img').alt = title;
+  userElement.querySelector('.element__title').textContent = title;
   elementsList.append(userElement);
-});
+}
+
+renderElements();
 
 // добавление новой карточки
 function submitFormCard (evt) {
