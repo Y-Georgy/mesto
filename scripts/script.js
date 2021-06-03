@@ -51,7 +51,9 @@ function createCard(title, link) {
   // навешиваем слушатели
   buttonLike.addEventListener('click', likeCard)
   buttonDelete.addEventListener('click', deleteCard)
-  imageCard.addEventListener('click', openPopupImage)
+  imageCard.addEventListener('click', () => {
+    openPopupImage(link, title);
+  })
 
   return userElement;
 }
@@ -86,12 +88,11 @@ function deleteCard (evt) {
   elementDelete.remove();
 }
 
-// popup image
-function openPopupImage (evt) {
-  const eventTarget = evt.target;
-  popupImage.src = eventTarget.src;
-  popupImage.alt = eventTarget.alt;
-  popupImageSignature.textContent = eventTarget.alt;
+// open popup image
+function openPopupImage (link, title) {
+  popupImage.src = link;
+  popupImage.alt = title;
+  popupImageSignature.textContent = title;
   openPopup(popupTypeImage);
 }
 
