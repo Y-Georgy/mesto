@@ -32,14 +32,7 @@ const elementTemplate = document.querySelector('.element-template').content;
 // Берем блок ul.elements__list
 const elementsList = document.querySelector('.elements__list');
 
-// генерируем элементы
-function renderElements() {
-  initialCards.forEach(function (item) {
-      renderElement(item.name, item.link)
-    });
-}
-
-// генерируем элемент
+// создаем element и наполняем его
 function renderElement(title, link) {
   const userElement = elementTemplate.querySelector('.element').cloneNode(true);
   const userElementImg = userElement.querySelector('.element__img');
@@ -47,11 +40,43 @@ function renderElement(title, link) {
   userElementImg.src = link;
   userElementImg.alt = title;
   userElementTitle.textContent = title;
-  elementsList.prepend(userElement);
+  // userElement.addEventListener('click', like);
+  // elementsList.prepend(addNewCard);
+  return userElement;
 }
 
+// проходимся по массиву с данными
+function renderElements() {
+  initialCards.forEach(function (item) {
+      renderElement(item.name, item.link)
+  });
+}
+
+// добавляем слушатели
+function () {
+  renderElement(title, link);
+  userElement.addEventListener('click', () => {
+    like();
+    //delete();
+    //попап();
+  }
+}
+
+
+
+function addNewCards () {
+  renderElements();
+
+}
+
+
+// добавляем в дом элемент
+// function addElementAtDom (readyElement) {
+//   elementsList.prepend(readyElement);
+// }
+
 // вызываем функцию генерирования первоначальных элементов
-renderElements();
+//renderElements();
 
 // добавление нового элемента
 function submitFormCard (evt) {
@@ -61,12 +86,20 @@ function submitFormCard (evt) {
 }
 
 // like card
-elementsList.addEventListener('click', evt => {
+
+// elementsList.addEventListener('click', evt => {
+//   const eventTarget = evt.target;
+//   if (eventTarget.classList.contains('element__icon-like')) {
+//     eventTarget.classList.toggle('element__icon-like_active');
+//   }
+// });
+
+function like (evt) {
   const eventTarget = evt.target;
   if (eventTarget.classList.contains('element__icon-like')) {
     eventTarget.classList.toggle('element__icon-like_active');
   }
-});
+}
 
 // delete card
 elementsList.addEventListener('click', evt => {
