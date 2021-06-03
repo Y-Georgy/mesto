@@ -35,30 +35,28 @@ const elementsList = document.querySelector('.elements__list');
 // генерируем элементы
 function renderElements() {
   initialCards.forEach(function (item) {
-      elementsList.prepend(createCard(item.name, item.link));
+      renderElement(item.name, item.link)
     });
 }
 
 // генерируем элемент
-function createCard(title, link) {
+function renderElement(title, link) {
   const userElement = elementTemplate.querySelector('.element').cloneNode(true);
   const userElementImg = userElement.querySelector('.element__img');
   const userElementTitle = userElement.querySelector('.element__title');
   userElementImg.src = link;
   userElementImg.alt = title;
   userElementTitle.textContent = title;
-  return userElement;
+  elementsList.prepend(userElement);
 }
 
 // вызываем функцию генерирования первоначальных элементов
 renderElements();
 
-
-
 // добавление нового элемента
 function submitFormCard (evt) {
   evt.preventDefault();
-  createCard(titleInput.value, linkInput.value);
+  renderElement(titleInput.value, linkInput.value);
   closePopup(popupTypeAdd);
 }
 

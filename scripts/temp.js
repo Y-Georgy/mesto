@@ -42,32 +42,36 @@ function renderElement(title, link) {
   userElementTitle.textContent = title;
   // userElement.addEventListener('click', like);
   // elementsList.prepend(addNewCard);
-  return userElement;
+
+  //return userElement;
 }
 
 // проходимся по массиву с данными
 function renderElements() {
-  initialCards.forEach(function (item) {
-      renderElement(item.name, item.link)
+  const secondArr = initialCards.map(function (item) {
+      return renderElement(item.name, item.link);
   });
+  console.log(secondArr);
 }
+
+
 
 // добавляем слушатели
-function () {
-  renderElement(title, link);
-  userElement.addEventListener('click', () => {
-    like();
-    //delete();
-    //попап();
-  }
-}
+// function () {
+//   renderElement(title, link);
+//   userElement.addEventListener('click', () => {
+//     like();
+//     //delete();
+//     //попап();
+//   }
+// }
 
 
 
-function addNewCards () {
-  renderElements();
+// function addNewCards () {
+//   renderElements();
 
-}
+// }
 
 
 // добавляем в дом элемент
@@ -76,7 +80,7 @@ function addNewCards () {
 // }
 
 // вызываем функцию генерирования первоначальных элементов
-//renderElements();
+renderElements();
 
 // добавление нового элемента
 function submitFormCard (evt) {
