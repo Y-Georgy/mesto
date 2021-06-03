@@ -39,7 +39,7 @@ function renderElements() {
     });
 }
 
-// генерируем элемент
+// создаем каточку
 function createCard(title, link) {
   const userElement = elementTemplate.querySelector('.element').cloneNode(true);
   const userElementImg = userElement.querySelector('.element__img');
@@ -47,13 +47,16 @@ function createCard(title, link) {
   userElementImg.src = link;
   userElementImg.alt = title;
   userElementTitle.textContent = title;
+  userElement.addEventListener('click', function (evt) {
+    likeCard(evt);
+    deleteCard(evt);
+    openPopupImage(evt);
+  });
   return userElement;
 }
 
 // вызываем функцию генерирования первоначальных элементов
 renderElements();
-
-
 
 // добавление нового элемента
 function submitFormCard (evt) {
@@ -63,24 +66,24 @@ function submitFormCard (evt) {
 }
 
 // like card
-elementsList.addEventListener('click', evt => {
+function likeCard (evt) {
   const eventTarget = evt.target;
   if (eventTarget.classList.contains('element__icon-like')) {
     eventTarget.classList.toggle('element__icon-like_active');
   }
-});
+}
 
 // delete card
-elementsList.addEventListener('click', evt => {
+function deleteCard (evt) {
   const eventTarget = evt.target;
   if (eventTarget.classList.contains('element__icon-delete')) {
     const elementDelete = eventTarget.closest('.element');
     elementDelete.remove();
   }
-});
+}
 
 // popup image
-elementsList.addEventListener('click', evt => {
+function openPopupImage (evt) {
   const eventTarget = evt.target;
   if (eventTarget.classList.contains('element__img')) {
     popupImage.src = eventTarget.src;
@@ -88,7 +91,7 @@ elementsList.addEventListener('click', evt => {
     popupImageSignature.textContent = eventTarget.alt;
     openPopup(popupTypeImage);
   }
-});
+}
 
 // открытие попапа
 function openPopup (popupType) {
