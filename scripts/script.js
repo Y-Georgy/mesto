@@ -34,17 +34,25 @@ const elementsList = document.querySelector('.elements__list');
 
 // создаем карточку
 function createCard(title, link) {
+  // клонируем
   const userElement = elementTemplate.querySelector('.element').cloneNode(true);
+  // обращаемся к нужным элементам
   const userElementImg = userElement.querySelector('.element__img');
   const userElementTitle = userElement.querySelector('.element__title');
+  const buttonLike = userElement.querySelector('.element__icon-like');
+  const buttonDelete = userElement.querySelector('.element__icon-delete');
+  const imageCard = userElement.querySelector('.element__img');
+
+  // наполняем данными
   userElementImg.src = link;
   userElementImg.alt = title;
   userElementTitle.textContent = title;
-  userElement.addEventListener('click', function (evt) {
-    likeCard(evt);
-    deleteCard(evt);
-    openPopupImage(evt);
-  });
+
+  // навешиваем слушатели
+  buttonLike.addEventListener('click', likeCard)
+  buttonDelete.addEventListener('click', deleteCard)
+  imageCard.addEventListener('click', openPopupImage)
+
   return userElement;
 }
 
@@ -68,29 +76,23 @@ function submitFormCard (evt) {
 // like card
 function likeCard (evt) {
   const eventTarget = evt.target;
-  if (eventTarget.classList.contains('element__icon-like')) {
-    eventTarget.classList.toggle('element__icon-like_active');
-  }
+  eventTarget.classList.toggle('element__icon-like_active');
 }
 
 // delete card
 function deleteCard (evt) {
   const eventTarget = evt.target;
-  if (eventTarget.classList.contains('element__icon-delete')) {
-    const elementDelete = eventTarget.closest('.element');
-    elementDelete.remove();
-  }
+  const elementDelete = eventTarget.closest('.element');
+  elementDelete.remove();
 }
 
 // popup image
 function openPopupImage (evt) {
   const eventTarget = evt.target;
-  if (eventTarget.classList.contains('element__img')) {
-    popupImage.src = eventTarget.src;
-    popupImage.alt = eventTarget.alt;
-    popupImageSignature.textContent = eventTarget.alt;
-    openPopup(popupTypeImage);
-  }
+  popupImage.src = eventTarget.src;
+  popupImage.alt = eventTarget.alt;
+  popupImageSignature.textContent = eventTarget.alt;
+  openPopup(popupTypeImage);
 }
 
 // открытие попапа
