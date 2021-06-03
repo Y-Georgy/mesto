@@ -32,14 +32,7 @@ const elementTemplate = document.querySelector('.element-template').content;
 // Берем блок ul.elements__list
 const elementsList = document.querySelector('.elements__list');
 
-// генерируем элементы
-function renderElements() {
-  initialCards.forEach(function (item) {
-      elementsList.prepend(createCard(item.name, item.link));
-    });
-}
-
-// создаем каточку
+// создаем карточку
 function createCard(title, link) {
   const userElement = elementTemplate.querySelector('.element').cloneNode(true);
   const userElementImg = userElement.querySelector('.element__img');
@@ -55,13 +48,20 @@ function createCard(title, link) {
   return userElement;
 }
 
-// вызываем функцию генерирования первоначальных элементов
+// проходим по массиву и добавляем на страницу новые карточки
+function renderElements() {
+  initialCards.forEach(function (item) {
+      elementsList.prepend(createCard(item.name, item.link));
+    });
+}
+
+// вызываем функцию добавления карточек
 renderElements();
 
-// добавление нового элемента
+// добавление новой карточки пользователя
 function submitFormCard (evt) {
   evt.preventDefault();
-  createCard(titleInput.value, linkInput.value);
+  elementsList.prepend(createCard(titleInput.value, linkInput.value));
   closePopup(popupTypeAdd);
 }
 

@@ -46,8 +46,8 @@
     <form method="POST" class="popup__container" name="formCard">
       <button type="reset" class="popup__icon-close" aria-label="Закрыть"></button>
       <h3 class="popup__heading">Новое место</h3>
-      <input placeholder="Название" type="text" class="popup__input popup__input_type_title" name="cardTitle">
-      <input placeholder="Ссылка на картинку" type="text" class="popup__input popup__input_type_link" name="cardLink">
+      <input placeholder="Название" type="text" class="popup__input popup__input_type_title" name="cardTitle" required>
+      <input placeholder="Ссылка на картинку" type="url" class="popup__input popup__input_type_link" name="cardLink" required>
       <button type="submit" class="popup__submit-button">Создать</button>
     </form>
   </div>
