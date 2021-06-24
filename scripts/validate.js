@@ -1,50 +1,51 @@
-const inputErrorClass = 'popup__input_type_error';
-const inputElement = document.forms.formAuthor.elements.authorName;
-const form = document.forms.formAuthor;
-const errorMassage = "Ошибка поля ввода";
+// const inputErrorClass = 'popup__input_type_error';
+// const inputElement = document.forms.formAuthor.elements.authorName;
+// const form = document.forms.formAuthor;
+// const errorMassage = "Ошибка поля ввода";
 
-function showErrorMassage(form, inputElement, inputErrorClass) {
+function showErrorMassage(form, inputElement, configForms) {
   const error = form.querySelector(`.${inputElement.id}-error`);
   const errorMassage = inputElement.validationMessage;
   error.textContent = errorMassage;
-  inputElement.classList.add(inputErrorClass);
-  error.classList.add('popup__error_visible');
+  inputElement.classList.add(configForms.inputErrorClass);
+  error.classList.add(configForms.errorClass);
 };
 
-function hideErrorMassage(form, inputElement, inputErrorClass) {
+function hideErrorMassage(form, inputElement, configForms) {
   const error = form.querySelector(`.${inputElement.id}-error`);
   error.textContent = "";
-  inputElement.classList.remove(inputErrorClass);
-  error.classList.remove('popup__error_visible');
+  inputElement.classList.remove(configForms.inputErrorClass);
+  error.classList.remove(configForms.errorClass);
 }
 
-function checkInputValidity(inputElement) {
+function checkInputValidity(form, inputElement, configForms) {
   if (inputElement.validity.valid) {
-    hideErrorMassage(form, inputElement, inputErrorClass);
+    hideErrorMassage(form, inputElement, configForms);
   } else {
-    showErrorMassage(form, inputElement, inputErrorClass);
+    showErrorMassage(form, inputElement, configForms);
   }
 }
 
-function toggleButtonState(inputElement, buttonElement) {
+function toggleButtonState(form, inputElement, configForms) {
+  const buttonElement = form.querySelector(configForms.submitButtonSelector);
   if (inputElement.validity.valid) {
-    buttonElement.classList.remove('popup__submit-button_disabled');
+    buttonElement.classList.remove(configForms.inactiveButtonClass);
     buttonElement.removeAttribute('disabled');
   } else {
-    buttonElement.classList.add('popup__submit-button_disabled');
+    buttonElement.classList.add(configForms.inactiveButtonClass);
     buttonElement.setAttribute('disabled', 'disabled');
   }
 }
 
-function setInputListeners(form, inputElement, inputErrorClass) {
-  const buttonElement = form.querySelector('.popup__submit-button');
+function setInputListeners(form, configForms) {
+  const inputElement = form.querySelector(configForms.inputSelector)
   inputElement.addEventListener('input', () => {
-    checkInputValidity(inputElement);
-    toggleButtonState(inputElement, buttonElement);
+    checkInputValidity(form, inputElement, configForms);
+    toggleButtonState(form, inputElement, configForms);
   });
 };
 
-function enableValidation (form, inputElement, inputErrorClass) {
+function enableValidation (configForms) {
   // const formList = Array.from(document.querySelectorAll(configForms.formSelector));
   // formList.forEach((formElement) => {
   //   formElement.addEventListener('submit', (evt) => {
@@ -52,23 +53,24 @@ function enableValidation (form, inputElement, inputErrorClass) {
   //   });
 
   // });
+  const form = document.querySelector(configForms.formSelector);
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
   });
-  setInputListeners(form, inputElement, inputErrorClass);
+  setInputListeners(form, configForms);
 }
 
-enableValidation(form, inputElement, inputErrorClass);
+// enableValidation(form, inputElement, inputErrorClass);
 
-// enableValidation({
-//   formSelector: '.popup__container', // формы
+enableValidation({
+  formSelector: '.popup__container[name="formAuthor"]', // формы
 
-//   inputSelector: '.popup__input', // инпуты
-//   inputErrorClass: 'popup__input_type_error', // красное подчеркивание ошибки
+  inputSelector: '.popup__input', // инпуты
+  inputErrorClass: 'popup__input_type_error', // красное подчеркивание ошибки
 
-//   submitButtonSelector: '.popup__submit-button', // кнопка submit
-//   inactiveButtonClass: 'popup__submit-button_disabled', // неактивная кнопка submit
+  submitButtonSelector: '.popup__submit-button', // кнопка submit
+  inactiveButtonClass: 'popup__submit-button_disabled', // неактивная кнопка submit
 
-//   errorClass: 'popup__error_visible' // вывод ошибки
-// });
+  errorClass: 'popup__error_visible' // вывод ошибки
+});
 
