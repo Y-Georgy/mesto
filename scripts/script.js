@@ -1,3 +1,6 @@
+const popupErrorList = Array.from(document.querySelectorAll('.popup__error'));
+const popupInputList = Array.from(document.querySelectorAll('.popup__input'));
+
 // профиль автора
 const profile = document.querySelector('.profile');
 const profileTitle = profile.querySelector('.profile__title');
@@ -104,6 +107,13 @@ function openPopup (popupType) {
 // закрытие попапа
 function closePopup (popupType) {
   popupType.classList.remove('popup_opened');
+  popupErrorList.forEach((popupError) => {
+    popupError.textContent = "";
+  });
+  popupInputList.forEach((popupInput) => {
+    popupInput.classList.remove('popup__input_type_error');
+  });
+
 }
 
 // передаем данные профиля в инпуты попапа редактирования профиля
