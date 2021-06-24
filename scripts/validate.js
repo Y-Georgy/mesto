@@ -26,23 +26,33 @@ function checkInputValidity(form, inputElement, configForms) {
   }
 }
 
-function toggleButtonState(form, inputElement, configForms) {
+function checkInputsValid(inputElements) {
+  return inputElements.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+}
+
+function toggleButtonState(form, inputElements, configForms) {
   const buttonElement = form.querySelector(configForms.submitButtonSelector);
-  if (inputElement.validity.valid) {
-    buttonElement.classList.remove(configForms.inactiveButtonClass);
-    buttonElement.removeAttribute('disabled');
-  } else {
+  console.log(checkInputsValid(inputElements));
+  if (checkInputsValid(inputElements)) {
     buttonElement.classList.add(configForms.inactiveButtonClass);
     buttonElement.setAttribute('disabled', 'disabled');
+  } else {
+    buttonElement.classList.remove(configForms.inactiveButtonClass);
+    buttonElement.removeAttribute('disabled');
   }
 }
 
 function setInputListeners(form, configForms) {
-  const inputElement = form.querySelector(configForms.inputSelector)
-  inputElement.addEventListener('input', () => {
-    checkInputValidity(form, inputElement, configForms);
-    toggleButtonState(form, inputElement, configForms);
+  const inputElements = Array.from(form.querySelectorAll(configForms.inputSelector));
+  inputElements.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      checkInputValidity(form, inputElement, configForms);
+      toggleButtonState(form, inputElements, configForms);
+    });
   });
+
 };
 
 function enableValidation (configForms) {
