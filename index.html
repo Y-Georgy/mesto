@@ -37,10 +37,10 @@
     <form method="POST" class="popup__container" name="formAuthor" novalidate>
       <button type="reset" class="popup__icon-close" aria-label="Закрыть"></button>
       <h3 class="popup__heading">Редактировать профиль</h3>
-      <input placeholder="Имя" type="text" class="popup__input popup__input_type_name" name="authorName" required minlength="2" maxlength="40">
-      <span class="popup__error name-input-error">Вы пропустили это поле</span>
-      <input placeholder="О себе" type="text" class="popup__input popup__input_type_job" name="authorJob" required minlength="2" maxlength="200">
-      <span class="popup__error job-input-error">Сообщение об ошибке</span>
+      <input placeholder="Имя" type="text" class="popup__input popup__input_type_name" name="authorName" required minlength="2" maxlength="40" id="name-input">
+      <span class="popup__error name-input-error"></span>
+      <input placeholder="О себе" type="text" class="popup__input popup__input_type_job" name="authorJob" required minlength="2" maxlength="200" id="job-input">
+      <span class="popup__error job-input-error"></span>
       <button type="submit" class="popup__submit-button">Сохранить</button>
     </form>
   </div>
@@ -49,7 +49,9 @@
       <button type="reset" class="popup__icon-close" aria-label="Закрыть"></button>
       <h3 class="popup__heading">Новое место</h3>
       <input placeholder="Название" type="text" class="popup__input popup__input_type_title" name="cardTitle" required>
+      <span class="popup__error title-input-error"></span>
       <input placeholder="Ссылка на картинку" type="url" class="popup__input popup__input_type_link" name="cardLink" required>
+      <span class="popup__error link-input-error"></span>
       <button type="submit" class="popup__submit-button">Создать</button>
     </form>
   </div>
