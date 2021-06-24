@@ -16,6 +16,7 @@ function hideErrorMassage(formElement, inputElement, configForms) {
   error.classList.remove(configForms.errorClass);
 }
 
+// проверяю валиден ли инпут
 function checkInputValidity(formElement, inputElement, configForms) {
   if (inputElement.validity.valid) {
     hideErrorMassage(formElement, inputElement, configForms);
@@ -24,12 +25,14 @@ function checkInputValidity(formElement, inputElement, configForms) {
   }
 }
 
+// true если хоть один из инпутов формы невалиден
 function checkInputsValid(inputElements) {
   return inputElements.some((inputElement) => {
     return !inputElement.validity.valid;
   });
 }
 
+// делаю кнопку submit активной/неактивной, проверяя валидацию инпутов
 function toggleButtonState(formElement, inputElements, configForms) {
   const buttonElement = formElement.querySelector(configForms.submitButtonSelector);
   if (checkInputsValid(inputElements)) {
@@ -41,9 +44,10 @@ function toggleButtonState(formElement, inputElements, configForms) {
   }
 }
 
+// устанавливаю слушатели всех инпутов и запускаю функции
 function setInputListeners(formElement, configForms) {
   const inputElements = Array.from(formElement.querySelectorAll(configForms.inputSelector));
-  toggleButtonState(formElement, inputElements, configForms);
+  toggleButtonState(formElement, inputElements, configForms); // до установки слушателей устанавливаю активность/неакт-ть кнопки submit
   inputElements.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       checkInputValidity(formElement, inputElement, configForms);
@@ -53,6 +57,7 @@ function setInputListeners(formElement, configForms) {
 
 };
 
+// функция валидации всех форм
 function enableValidation (configForms) {
   const formList = Array.from(document.querySelectorAll(configForms.formSelector));
   formList.forEach((formElement) => {
@@ -63,7 +68,7 @@ function enableValidation (configForms) {
   });
 }
 
-
+// запускаю валидацию всех форм, передавая объект с нужными данными
 enableValidation({
   formSelector: '.popup__container', // формы
   inputSelector: '.popup__input', // инпуты
