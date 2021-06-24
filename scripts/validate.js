@@ -3,23 +3,26 @@ const inputElement = document.forms.formAuthor.elements.authorName;
 const form = document.forms.formAuthor;
 const errorMassage = "Ошибка поля ввода";
 
-function showErrorMassage(form, inputElement, inputErrorClass, errorMassage) {
+function showErrorMassage(form, inputElement, inputErrorClass) {
   const error = form.querySelector(`.${inputElement.id}-error`);
+  const errorMassage = inputElement.validationMessage;
   error.textContent = errorMassage;
   inputElement.classList.add(inputErrorClass);
+  error.classList.add('popup__error_visible');
 };
 
 function hideErrorMassage(form, inputElement, inputErrorClass) {
   const error = form.querySelector(`.${inputElement.id}-error`);
   error.textContent = "";
   inputElement.classList.remove(inputErrorClass);
+  error.classList.remove('popup__error_visible');
 }
 
 function checkInputValidity(inputElement) {
   if (inputElement.validity.valid) {
     hideErrorMassage(form, inputElement, inputErrorClass);
   } else {
-    showErrorMassage(form, inputElement, inputErrorClass, errorMassage);
+    showErrorMassage(form, inputElement, inputErrorClass);
   }
 }
 
@@ -33,7 +36,7 @@ function toggleButtonState(inputElement, buttonElement) {
   }
 }
 
-function setInputListeners(form, inputElement, inputErrorClass, errorMassage) {
+function setInputListeners(form, inputElement, inputErrorClass) {
   const buttonElement = form.querySelector('.popup__submit-button');
   inputElement.addEventListener('input', () => {
     checkInputValidity(inputElement);
@@ -41,7 +44,7 @@ function setInputListeners(form, inputElement, inputErrorClass, errorMassage) {
   });
 };
 
-function enableValidation (form, inputElement, inputErrorClass, errorMassage) {
+function enableValidation (form, inputElement, inputErrorClass) {
   // const formList = Array.from(document.querySelectorAll(configForms.formSelector));
   // formList.forEach((formElement) => {
   //   formElement.addEventListener('submit', (evt) => {
@@ -52,10 +55,10 @@ function enableValidation (form, inputElement, inputErrorClass, errorMassage) {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
   });
-  setInputListeners(form, inputElement, inputErrorClass, errorMassage);
+  setInputListeners(form, inputElement, inputErrorClass);
 }
 
-enableValidation(form, inputElement, inputErrorClass, errorMassage);
+enableValidation(form, inputElement, inputErrorClass);
 
 // enableValidation({
 //   formSelector: '.popup__container', // формы
