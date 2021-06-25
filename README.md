@@ -18,6 +18,8 @@ HTML5
 CSS3
 JavaScript
 Схема организации файловой структуры проекта - Nested БЭМ
+Валидация форм JS
+
 ```
 
 ![N|Solid](https://img.shields.io/badge/-©%202021-red)

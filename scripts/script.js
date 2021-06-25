@@ -64,8 +64,8 @@ function createCard(title, link) {
 // проходим по массиву и добавляем на страницу новые карточки
 function renderElements() {
   initialCards.forEach(function (item) {
-      elementsList.prepend(createCard(item.name, item.link));
-    });
+    elementsList.prepend(createCard(item.name, item.link));
+  });
 }
 
 // вызываем функцию добавления карточек
@@ -99,21 +99,62 @@ function openPopupImage (link, title) {
   openPopup(popupTypeImage);
 }
 
+// БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ОВЕРЛЕЙ
+// функция установки слушателя по оверлею
+function setListenerOverlayClick(popup) {
+  popup.addEventListener('click', (evt) => {
+    checkContainsClassOverlay(evt);
+  });
+}
+// функция удаления слушателя по оверлею
+function removeListenerOverlayClick(popup) {
+  popup.removeEventListener('click', (evt) => {
+    checkContainsClassOverlay(evt);
+  });
+}
+// проверка содержания класса оверлея
+function checkContainsClassOverlay (evt) {
+  if (evt.target.classList.contains('popup')) {
+    closePopup (evt.target);
+  }
+}
+
+// БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ESC
+function setEscListener() {
+  document.addEventListener('keydown', checkPressEscKey);
+};
+
+function removeEscListener() {
+  document.removeEventListener('keydown', checkPressEscKey);
+};
+
+function checkPressEscKey (evt) {
+  const openedPopupNow = document.querySelector('.popup_opened');
+  if (evt.key === 'Escape') {
+    closePopup(openedPopupNow);
+  }
+}
+
 // открытие попапа
 function openPopup (popupType) {
   popupType.classList.add('popup_opened');
+  setListenerOverlayClick(popupType);
+  setEscListener(); // устанавливаю слушатель ESC для закрытия попапа
 }
 
 // закрытие попапа
 function closePopup (popupType) {
   popupType.classList.remove('popup_opened');
+  removeEscListener(); // удаляю слушатель ESC для закрытия попапа
+  removeListenerOverlayClick(popupType); // удаляю слушатель клика по оверлею при закрытии попапа
+
+  // очиска ошибок валидации при закрытии
   popupErrorList.forEach((popupError) => {
     popupError.textContent = "";
   });
   popupInputList.forEach((popupInput) => {
     popupInput.classList.remove('popup__input_type_error');
   });
-
 }
 
 // передаем данные профиля в инпуты попапа редактирования профиля
