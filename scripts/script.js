@@ -1,5 +1,6 @@
 const popupErrorList = Array.from(document.querySelectorAll('.popup__error'));
 const popupInputList = Array.from(document.querySelectorAll('.popup__input'));
+const popupList = Array.from(document.querySelectorAll('.popup'));
 
 // профиль автора
 const profile = document.querySelector('.profile');
@@ -23,6 +24,7 @@ const linkInput = popupTypeAdd.querySelector('.popup__input_type_link');
 // кнопки попапа добавления карточки
 const buttonClosePopupTypeAdd = popupTypeAdd.querySelector('.popup__icon-close');
 const formElementPopupTypeAdd = popupTypeAdd.querySelector('.popup__container');
+const buttonSubmitPopupTypeAdd = popupTypeAdd.querySelector('.popup__submit-button');
 
 // попап изображения карточки
 const popupTypeImage = document.querySelector('.popup_type_image');
@@ -44,7 +46,6 @@ function createCard(title, link) {
   const userElementTitle = userElement.querySelector('.element__title');
   const buttonLike = userElement.querySelector('.element__icon-like');
   const buttonDelete = userElement.querySelector('.element__icon-delete');
-  const imageCard = userElement.querySelector('.element__img');
 
   // наполняем данными
   userElementImg.src = link;
@@ -54,7 +55,7 @@ function createCard(title, link) {
   // навешиваем слушатели
   buttonLike.addEventListener('click', likeCard)
   buttonDelete.addEventListener('click', deleteCard)
-  imageCard.addEventListener('click', () => {
+  userElementImg.addEventListener('click', () => {
     openPopupImage(link, title);
   })
 
@@ -76,6 +77,10 @@ function submitFormCard (evt) {
   evt.preventDefault();
   elementsList.prepend(createCard(titleInput.value, linkInput.value));
   closePopup(popupTypeAdd);
+  titleInput.value = "";
+  linkInput.value = "";
+  buttonSubmitPopupTypeAdd.classList.add('popup__submit-button_disabled');
+  buttonSubmitPopupTypeAdd.setAttribute('disabled', 'disabled');
 }
 
 // like card
@@ -106,18 +111,21 @@ function setListenerOverlayClick(popup) {
     checkContainsClassOverlay(evt);
   });
 }
-// функция удаления слушателя по оверлею
-function removeListenerOverlayClick(popup) {
-  popup.removeEventListener('click', (evt) => {
-    checkContainsClassOverlay(evt);
-  });
-}
+
 // проверка содержания класса оверлея
 function checkContainsClassOverlay (evt) {
   if (evt.target.classList.contains('popup')) {
     closePopup (evt.target);
   }
 }
+
+function setListenersToAllPopups (popupList) {
+  popupList.forEach((popupElem) => {
+    setListenerOverlayClick(popupElem);
+  })
+}
+
+setListenersToAllPopups(popupList);
 
 // БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ESC
 function setEscListener() {
@@ -129,8 +137,8 @@ function removeEscListener() {
 };
 
 function checkPressEscKey (evt) {
-  const openedPopupNow = document.querySelector('.popup_opened');
   if (evt.key === 'Escape') {
+    const openedPopupNow = document.querySelector('.popup_opened');
     closePopup(openedPopupNow);
   }
 }
@@ -138,7 +146,6 @@ function checkPressEscKey (evt) {
 // открытие попапа
 function openPopup (popupType) {
   popupType.classList.add('popup_opened');
-  setListenerOverlayClick(popupType);
   setEscListener(); // устанавливаю слушатель ESC для закрытия попапа
 }
 
@@ -146,9 +153,10 @@ function openPopup (popupType) {
 function closePopup (popupType) {
   popupType.classList.remove('popup_opened');
   removeEscListener(); // удаляю слушатель ESC для закрытия попапа
-  removeListenerOverlayClick(popupType); // удаляю слушатель клика по оверлею при закрытии попапа
+}
 
-  // очиска ошибок валидации при закрытии
+  // функция очистки ошибок валидации
+function clearErrorsMessage() {
   popupErrorList.forEach((popupError) => {
     popupError.textContent = "";
   });
@@ -157,10 +165,12 @@ function closePopup (popupType) {
   });
 }
 
+
 // передаем данные профиля в инпуты попапа редактирования профиля
 function editValuePopupTypeEdit () {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
+  clearErrorsMessage();
   openPopup (popupTypeEdit);
 }
 
@@ -183,6 +193,7 @@ buttonClosePopupTypeEdit.addEventListener('click', () => {
 
 // слушатели кнопок попапа добавления карточки
 buttonAdd.addEventListener('click', () => {
+  clearErrorsMessage();
   openPopup(popupTypeAdd);
 });
 buttonClosePopupTypeAdd.addEventListener('click', () => {

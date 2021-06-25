@@ -36,12 +36,20 @@ function checkInputsValid(inputElements) {
 function toggleButtonState(formElement, inputElements, configForms) {
   const buttonElement = formElement.querySelector(configForms.submitButtonSelector);
   if (checkInputsValid(inputElements)) {
-    buttonElement.classList.add(configForms.inactiveButtonClass);
-    buttonElement.setAttribute('disabled', 'disabled');
+    activateButtonSubmit(buttonElement, configForms)
   } else {
-    buttonElement.classList.remove(configForms.inactiveButtonClass);
-    buttonElement.removeAttribute('disabled');
+    inactivateButtonSubmit(buttonElement, configForms)
   }
+}
+
+function activateButtonSubmit(buttonElement, configForms) {
+  buttonElement.classList.add(configForms.inactiveButtonClass);
+  buttonElement.setAttribute('disabled', 'disabled');
+}
+
+function inactivateButtonSubmit(buttonElement, configForms) {
+  buttonElement.classList.remove(configForms.inactiveButtonClass);
+  buttonElement.removeAttribute('disabled');
 }
 
 // устанавливаю слушатели всех инпутов и запускаю функции
