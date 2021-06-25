@@ -1,15 +1,15 @@
 
 // Показываю сообщение об ошибке
-function showErrorMassage(formElement, inputElement, configForms) {
+function showErrorMessage(formElement, inputElement, configForms) {
   const error = formElement.querySelector(`.${inputElement.id}-error`);
-  const errorMassage = inputElement.validationMessage;
-  error.textContent = errorMassage;
+  const errorMessage = inputElement.validationMessage;
+  error.textContent = errorMessage;
   inputElement.classList.add(configForms.inputErrorClass);
   error.classList.add(configForms.errorClass);
 };
 
 // скрываю сообщение об ошибке
-function hideErrorMassage(formElement, inputElement, configForms) {
+function hideErrorMessage(formElement, inputElement, configForms) {
   const error = formElement.querySelector(`.${inputElement.id}-error`);
   error.textContent = "";
   inputElement.classList.remove(configForms.inputErrorClass);
@@ -19,9 +19,9 @@ function hideErrorMassage(formElement, inputElement, configForms) {
 // проверяю валиден ли инпут
 function checkInputValidity(formElement, inputElement, configForms) {
   if (inputElement.validity.valid) {
-    hideErrorMassage(formElement, inputElement, configForms);
+    hideErrorMessage(formElement, inputElement, configForms);
   } else {
-    showErrorMassage(formElement, inputElement, configForms);
+    showErrorMessage(formElement, inputElement, configForms);
   }
 }
 
