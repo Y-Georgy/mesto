@@ -1,3 +1,9 @@
 {
-    "liveServer.settings.port": 5501
+    "liveServer.settings.port": 5501,
+    "workbench.colorCustomizations": {
+      "editor.selectionBackground": "#e788ff", // Текущий выделенный текст
+      "editor.selectionHighlightBackground": "#ff0000", // тот же контент, что и выделение
+      "editor.findMatchBackground": "#00cc44a8", // Текущий матч поиска
+      "editor.findMatchHighlightBackground": "#ff7b00a1" // Другие результаты поиска
+  }
 }
