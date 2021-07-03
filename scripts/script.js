@@ -1,3 +1,7 @@
+import Card from './Card.js';
+import initialCards from './initialCards.js';
+
+// ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
 import FormValidator from './FormValidator.js';
 
 const config = {
@@ -51,40 +55,26 @@ const popupImage = popupTypeImage.querySelector('.popup__image');
 const popupImageSignature = popupTypeImage.querySelector('.popup__image-signature');
 const buttonClosePopupTypeImage = popupTypeImage.querySelector('.popup__icon-close');
 
-// Берем блок template element
-const elementTemplate = document.querySelector('.element-template').content;
+
+
 // Берем блок ul.elements__list
 const elementsList = document.querySelector('.elements__list');
+// Берем template
+const templateSelector = '.element-template';
 
-// создаем карточку
-function createCard(title, link) {
-  // клонируем
-  const userElement = elementTemplate.querySelector('.element').cloneNode(true);
-  // обращаемся к нужным элементам
-  const userElementImg = userElement.querySelector('.element__img');
-  const userElementTitle = userElement.querySelector('.element__title');
-  const buttonLike = userElement.querySelector('.element__icon-like');
-  const buttonDelete = userElement.querySelector('.element__icon-delete');
-
-  // наполняем данными
-  userElementImg.src = link;
-  userElementImg.alt = title;
-  userElementTitle.textContent = title;
-
-  // навешиваем слушатели
-  buttonLike.addEventListener('click', likeCard)
-  buttonDelete.addEventListener('click', deleteCard)
-  userElementImg.addEventListener('click', () => {
-    openPopupImage(link, title);
-  })
-
-  return userElement;
+// open popup image
+const openPopupImage = (link, title) => {
+  popupImage.src = link;
+  popupImage.alt = title;
+  popupImageSignature.textContent = title;
+  openPopup(popupTypeImage);
 }
 
 // проходим по массиву и добавляем на страницу новые карточки
 function renderElements() {
   initialCards.forEach(function (item) {
-    elementsList.prepend(createCard(item.name, item.link));
+    const newCard = new Card(item, templateSelector, openPopupImage)
+    elementsList.prepend(newCard.createCard());
   });
 }
 
@@ -94,33 +84,18 @@ renderElements();
 // добавление новой карточки пользователя
 function submitFormCard (evt) {
   evt.preventDefault();
-  elementsList.prepend(createCard(titleInput.value, linkInput.value));
+  const dataNewCard = {
+    name: titleInput.value,
+    link: linkInput.value
+  }
+  const newCard = new Card(dataNewCard, templateSelector, openPopupImage)
+
+  elementsList.prepend(newCard.createCard());
   closePopup(popupTypeAdd);
   titleInput.value = "";
   linkInput.value = "";
   buttonSubmitPopupTypeAdd.classList.add('popup__submit-button_disabled');
   buttonSubmitPopupTypeAdd.setAttribute('disabled', 'disabled');
-}
-
-// like card
-function likeCard (evt) {
-  const eventTarget = evt.target;
-  eventTarget.classList.toggle('element__icon-like_active');
-}
-
-// delete card
-function deleteCard (evt) {
-  const eventTarget = evt.target;
-  const elementDelete = eventTarget.closest('.element');
-  elementDelete.remove();
-}
-
-// open popup image
-function openPopupImage (link, title) {
-  popupImage.src = link;
-  popupImage.alt = title;
-  popupImageSignature.textContent = title;
-  openPopup(popupTypeImage);
 }
 
 // БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ОВЕРЛЕЙ
