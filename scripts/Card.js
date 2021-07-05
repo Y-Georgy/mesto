@@ -1,11 +1,16 @@
 class Card {
   constructor (data, templateSelector, openPopupImage) {
     this._templateElement = document.querySelector(templateSelector).content;
-    this._cardNewElement = this._templateElement.querySelector('.element').cloneNode(true);
+
     this._title = data.name;
     this._link = data.link;
     this._openPopupImage = openPopupImage;
   }
+
+  // клонируем template
+    _cloneTemplateElement = () => {
+      this._cardNewElement = this._templateElement.querySelector('.element').cloneNode(true);
+    }
 
   // берем нужные элементы из разметки
   _takeElementsCard = () => {
@@ -32,9 +37,8 @@ class Card {
   }
 
   // like card
-  _likeCard = (evt) => {
-    const eventTarget = evt.target;
-    eventTarget.classList.toggle('element__icon-like_active');
+  _likeCard = () => {
+    this._buttonLike.classList.toggle('element__icon-like_active');
   }
 
   // delete card
@@ -46,6 +50,7 @@ class Card {
 
   // создаем карточку
   createCard = () => {
+    this._cloneTemplateElement();
     this._takeElementsCard();
     this._fillDataCard();
     this._setEventListeners();
