@@ -70,16 +70,20 @@ const openPopupImage = (link, title) => {
   openPopup(popupTypeImage);
 }
 
+function constructNewCard(data, templateSelector, openPopupImage) {
+  const newCard = new Card(data, templateSelector, openPopupImage);
+  return newCard.createCard();
+}
+
 // проходим по массиву и добавляем на страницу новые карточки
-function renderElements() {
+function renderElements(initialCards, elementsList) {
   initialCards.forEach(function (item) {
-    const newCard = new Card(item, templateSelector, openPopupImage)
-    elementsList.prepend(newCard.createCard());
+    elementsList.prepend(constructNewCard(item, templateSelector, openPopupImage));
   });
 }
 
 // вызываем функцию добавления карточек
-renderElements();
+renderElements(initialCards, elementsList);
 
 // ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
 function submitFormCard (evt) {
@@ -88,14 +92,16 @@ function submitFormCard (evt) {
     name: titleInput.value,
     link: linkInput.value
   }
-  const newCard = new Card(dataNewCard, templateSelector, openPopupImage)
-
-  elementsList.prepend(newCard.createCard());
+  elementsList.prepend(constructNewCard(dataNewCard, templateSelector, openPopupImage));
   closePopup(popupTypeAdd);
-  titleInput.value = "";
+  //linkInput.reset();
   linkInput.value = "";
-  buttonSubmitPopupTypeAdd.classList.add('popup__submit-button_disabled');
-  buttonSubmitPopupTypeAdd.setAttribute('disabled', 'disabled');
+  titleInput.value = "";
+  formCardValidator.toggleButtonState();
+  //formCardValidator.reset();
+
+  //buttonSubmitPopupTypeAdd.classList.add('popup__submit-button_disabled');
+  //buttonSubmitPopupTypeAdd.setAttribute('disabled', 'disabled');
 }
 
 // БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ОВЕРЛЕЙ

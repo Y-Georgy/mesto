@@ -1,7 +1,6 @@
 class Card {
   constructor (data, templateSelector, openPopupImage) {
     this._templateElement = document.querySelector(templateSelector).content;
-
     this._title = data.name;
     this._link = data.link;
     this._openPopupImage = openPopupImage;
@@ -42,9 +41,8 @@ class Card {
   }
 
   // delete card
-  _deleteCard = (evt) => {
-    const eventTarget = evt.target;
-    const cardElementToDelete = eventTarget.closest('.element');
+  _deleteCard = () => {
+    const cardElementToDelete = this._buttonDelete.closest('.element');
     cardElementToDelete.remove();
   }
 

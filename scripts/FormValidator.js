@@ -1,6 +1,8 @@
 class FormValidator {
   constructor (config, formElement) {
     this._formElement = formElement; // форма
+    this._buttonElement = formElement.querySelector(config.submitButtonSelector); // кнопка сабмит
+    this._inputElements = Array.from(formElement.querySelectorAll(config.inputSelector)); // все инпуты
     this._configForm = config; // объект с классами формы
   }
 
@@ -29,39 +31,48 @@ class FormValidator {
   }
 
   // активирую кнопку сабмит
-  _activateButtonSubmit = (buttonElement) => {
-    buttonElement.classList.add(this._configForm.inactiveButtonClass);
-    buttonElement.setAttribute('disabled', 'disabled');
+  _activateButtonSubmit = () => {
+    this._buttonElement.classList.add(this._configForm.inactiveButtonClass);
+    this._buttonElement.setAttribute('disabled', 'disabled');
   }
   // дезактивирую кнопку сабмит
-  _inactivateButtonSubmit = (buttonElement) => {
-    buttonElement.classList.remove(this._configForm.inactiveButtonClass);
-    buttonElement.removeAttribute('disabled');
+  _inactivateButtonSubmit = () => {
+    this._buttonElement.classList.remove(this._configForm.inactiveButtonClass);
+    this._buttonElement.removeAttribute('disabled');
   }
+
+  // переключатель кнопки сабмит
+  // toggleButtonSubmitState = () => {
+  //   if (this._buttonElement.classList.contains(this._configForm.inactiveButtonClass)) {
+  //     this._inactivateButtonSubmit();
+  //   } else {
+  //     this._activateButtonSubmit();
+  //   }
+  // }
+
   // проверка всех инпутов формы - true если хоть один из инпутов формы невалиден
-  _checkInputsValid = (inputElements) => {
-    return inputElements.some((inputElement) => {
+  _checkInputsValid = () => {
+    return this._inputElements.some((inputElement) => {
       return !inputElement.validity.valid;
     });
   }
   // делаю кнопку submit активной/неактивной, проверяя валидацию инпутов
-  _toggleButtonState = (inputElements) => {
-    const buttonElement = this._formElement.querySelector(this._configForm.submitButtonSelector);
-    if (this._checkInputsValid(inputElements)) {
-      this._activateButtonSubmit(buttonElement);
+  toggleButtonState = () => {
+    if (this._checkInputsValid()) {
+      this._activateButtonSubmit();
     } else {
-      this._inactivateButtonSubmit(buttonElement);
+      this._inactivateButtonSubmit();
     }
   }
 
   // устанавливаю слушатели всех инпутов и запускаю методы
   _setInputListeners = () => {
-    const inputElements = Array.from(this._formElement.querySelectorAll(this._configForm.inputSelector));
-    this._toggleButtonState(inputElements); // до установки слушателей устанавливаю активность/неакт-ть кнопки submit
-    inputElements.forEach((inputElement) => {
+    //
+    this.toggleButtonState(); // до установки слушателей устанавливаю активность/неакт-ть кнопки submit
+    this._inputElements.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         this._checkInputValidity(inputElement);
-        this._toggleButtonState(inputElements);
+        this.toggleButtonState();
       });
     });
   };
