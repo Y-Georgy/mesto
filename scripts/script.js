@@ -56,7 +56,7 @@ const popupImageSignature = popupTypeImage.querySelector('.popup__image-signatur
 const buttonClosePopupTypeImage = popupTypeImage.querySelector('.popup__icon-close');
 
 
-
+// ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ
 // Берем блок ul.elements__list
 const elementsList = document.querySelector('.elements__list');
 // Берем template
@@ -81,7 +81,7 @@ function renderElements() {
 // вызываем функцию добавления карточек
 renderElements();
 
-// добавление новой карточки пользователя
+// ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
 function submitFormCard (evt) {
   evt.preventDefault();
   const dataNewCard = {
@@ -158,7 +158,6 @@ function clearErrorsMessage() {
     popupInput.classList.remove('popup__input_type_error');
   });
 }
-
 
 // передаем данные профиля в инпуты попапа редактирования профиля
 function editValuePopupTypeEdit () {

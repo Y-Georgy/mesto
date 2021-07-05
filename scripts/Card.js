@@ -7,7 +7,7 @@ class Card {
     this._openPopupImage = openPopupImage;
   }
 
-  // беру нужные элементы из разметки
+  // берем нужные элементы из разметки
   _takeElementsCard = () => {
     this._imgElement = this._cardNewElement.querySelector('.element__img');
     this._titleElement = this._cardNewElement.querySelector('.element__title');
@@ -44,6 +44,7 @@ class Card {
     cardElementToDelete.remove();
   }
 
+  // создаем карточку
   createCard = () => {
     this._takeElementsCard();
     this._fillDataCard();

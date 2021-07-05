@@ -64,7 +64,6 @@ class FormValidator {
         this._toggleButtonState(inputElements);
       });
     });
-
   };
 
   // публичный метод валидации всех форм
