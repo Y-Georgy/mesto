@@ -4,6 +4,8 @@ class FormValidator {
     this._buttonElement = formElement.querySelector(config.submitButtonSelector); // кнопка сабмит
     this._inputElements = Array.from(formElement.querySelectorAll(config.inputSelector)); // все инпуты
     this._configForm = config; // объект с классами формы
+    this._popupErrorList = Array.from(this._formElement.querySelectorAll(config.errorSelector)); // массив всех ошибок
+    this._popupInputList = Array.from(this._formElement.querySelectorAll(config.inputSelector)); // массив всех инпутов
   }
 
   // Показываю сообщение об ошибке
@@ -41,15 +43,6 @@ class FormValidator {
     this._buttonElement.removeAttribute('disabled');
   }
 
-  // переключатель кнопки сабмит
-  // toggleButtonSubmitState = () => {
-  //   if (this._buttonElement.classList.contains(this._configForm.inactiveButtonClass)) {
-  //     this._inactivateButtonSubmit();
-  //   } else {
-  //     this._activateButtonSubmit();
-  //   }
-  // }
-
   // проверка всех инпутов формы - true если хоть один из инпутов формы невалиден
   _checkInputsValid = () => {
     return this._inputElements.some((inputElement) => {
@@ -83,6 +76,16 @@ class FormValidator {
       evt.preventDefault();
     });
     this._setInputListeners();
+  }
+
+  // функция очистки ошибок валидации
+  clearErrorsMessage = () => {
+    this._popupErrorList.forEach((popupError) => {
+      popupError.textContent = "";
+    });
+    this._popupInputList.forEach((popupInput) => {
+      popupInput.classList.remove(this._configForm.inputErrorClass);
+    });
   }
 }
 

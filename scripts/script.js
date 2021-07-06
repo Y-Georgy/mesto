@@ -10,7 +10,8 @@ const config = {
   inputErrorClass: 'popup__input_type_error', // красное подчеркивание ошибки
   submitButtonSelector: '.popup__submit-button', // кнопка submit
   inactiveButtonClass: 'popup__submit-button_disabled', // неактивная кнопка submit
-  errorClass: 'popup__error_visible' // вывод ошибки
+  errorClass: 'popup__error_visible', // вывод ошибки
+  errorSelector: '.popup__error' // селектор ошибок
 }
 
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
@@ -18,11 +19,8 @@ formAuthorValidator.enableValidation();
 
 const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
-
 // ------------------------------------------------------------------------------------
 
-const popupErrorList = Array.from(document.querySelectorAll('.popup__error'));
-const popupInputList = Array.from(document.querySelectorAll('.popup__input'));
 const popupList = Array.from(document.querySelectorAll('.popup'));
 
 // профиль автора
@@ -94,14 +92,8 @@ function submitFormCard (evt) {
   }
   elementsList.prepend(constructNewCard(dataNewCard, templateSelector, openPopupImage));
   closePopup(popupTypeAdd);
-  //linkInput.reset();
-  linkInput.value = "";
-  titleInput.value = "";
+  formElementPopupTypeAdd.reset();
   formCardValidator.toggleButtonState();
-  //formCardValidator.reset();
-
-  //buttonSubmitPopupTypeAdd.classList.add('popup__submit-button_disabled');
-  //buttonSubmitPopupTypeAdd.setAttribute('disabled', 'disabled');
 }
 
 // БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ОВЕРЛЕЙ
@@ -155,21 +147,11 @@ function closePopup (popupType) {
   removeEscListener(); // удаляю слушатель ESC для закрытия попапа
 }
 
-  // функция очистки ошибок валидации
-function clearErrorsMessage() {
-  popupErrorList.forEach((popupError) => {
-    popupError.textContent = "";
-  });
-  popupInputList.forEach((popupInput) => {
-    popupInput.classList.remove('popup__input_type_error');
-  });
-}
-
 // передаем данные профиля в инпуты попапа редактирования профиля
 function editValuePopupTypeEdit () {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
-  clearErrorsMessage();
+  formAuthorValidator.clearErrorsMessage();
   openPopup (popupTypeEdit);
 }
 
@@ -192,7 +174,7 @@ buttonClosePopupTypeEdit.addEventListener('click', () => {
 
 // слушатели кнопок попапа добавления карточки
 buttonAdd.addEventListener('click', () => {
-  clearErrorsMessage();
+  formCardValidator.clearErrorsMessage();
   openPopup(popupTypeAdd);
 });
 buttonClosePopupTypeAdd.addEventListener('click', () => {
