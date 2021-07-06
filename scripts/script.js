@@ -177,9 +177,11 @@ buttonAdd.addEventListener('click', () => {
   formCardValidator.clearErrorsMessage();
   openPopup(popupTypeAdd);
 });
+
 buttonClosePopupTypeAdd.addEventListener('click', () => {
   closePopup(popupTypeAdd);
 });
+
 formElementPopupTypeAdd.addEventListener('submit', submitFormCard);
 
 // слушатели кнопок попапа изображения карточки
