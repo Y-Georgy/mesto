@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./pages/index.css">
+    <!-- <link rel="stylesheet" href="./pages/index.css"> -->
     <title>Проект Mesto</title>
 </head>
 <body class="page">
   <header class="header page__header">
-    <img src="./images/logo.svg" alt="Логотип Mesto" class="header__logo">
+    <img src="<%=require('./images/logo.svg')%>" alt="Логотип Mesto" class="header__logo">
   </header>
   <main class="content">
     <section class="profile">
       <div class="profile__author">
-        <img class="profile__avatar" src="./images/kysto.jpg" alt="Аватар автора">
+        <img class="profile__avatar" src="<%=require('./images/kysto.jpg')%>" alt="Аватар автора">
         <div class="profile__text">
           <div class="profile__title-overlay">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -74,8 +74,7 @@
       <button type="button" class="element__icon-delete" aria-label="Удалить"></button>
     </li>
   </template>
-  <!-- <script src="./scripts/initialCards.js"></script> -->
-  <script type="module" src="./scripts/script.js"></script>
+  <!-- <script type="module" src="./scripts/script.js"></script> -->
 </body>
 </html>
 
