@@ -67,3 +67,8 @@ export const popupTypeImage = document.querySelector('.popup_type_image');
 export const popupImage = popupTypeImage.querySelector('.popup__image');
 export const popupImageSignature = popupTypeImage.querySelector('.popup__image-signature');
 export const buttonClosePopupTypeImage = popupTypeImage.querySelector('.popup__icon-close');
+
+// Берем блок ul.elements__list
+export const elementsList = document.querySelector('.elements__list');
+// Берем template
+export const templateSelector = '.element-template';

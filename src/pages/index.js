@@ -23,26 +23,19 @@ import {
   popupTypeImage,
   popupImage,
   popupImageSignature,
-  buttonClosePopupTypeImage
+  buttonClosePopupTypeImage,
+  elementsList,
+  templateSelector
 } from '../utils/constants.js';
 
 // ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
-
-
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
 formAuthorValidator.enableValidation();
 
 const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
-// ------------------------------------------------------------------------------------
-
 
 // ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ
-// Берем блок ul.elements__list
-const elementsList = document.querySelector('.elements__list');
-// Берем template
-const templateSelector = '.element-template';
-
 // open popup image
 const openPopupImage = (link, title) => {
   popupImage.src = link;
