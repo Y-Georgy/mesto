@@ -9,22 +9,18 @@ import {
   popupTypeImageSelector,
   initialCards,
   config,
-  popupList,
   profileTitle,
   profileSubtitle,
   buttonEdit,
   buttonAdd,
   nameInput,
   jobInput,
-  buttonClosePopupTypeEdit,
   formElementPopupTypeEdit,
   titleInput,
   linkInput,
-  buttonClosePopupTypeAdd,
   formElementPopupTypeAdd,
   popupImage,
   popupImageSignature,
-  buttonClosePopupTypeImage,
   templateSelector,
   containerForCardsSelector
 } from '../utils/constants.js';
@@ -84,31 +80,6 @@ function submitFormCard (evt) {
   formCardValidator.toggleButtonState();
 }
 
-
-
-// 5 БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ОВЕРЛЕЙ -------------------------------------------------------------------------------------
-// функция установки слушателя по оверлею
-function setListenerOverlayClick(popup) {
-  popup.addEventListener('click', (evt) => {
-    checkContainsClassOverlay(evt);
-  });
-}
-
-// проверка содержания класса оверлея
-function checkContainsClassOverlay (evt) {
-  if (evt.target.classList.contains('popup')) {
-    closePopup (evt.target);
-  }
-}
-
-function setListenersToAllPopups (popupList) {
-  popupList.forEach((popupElem) => {
-    setListenerOverlayClick(popupElem);
-  })
-}
-
-setListenersToAllPopups(popupList);
-
 // 9 ПОПАП АВТОРА --------------------------------------------------------------------------------------------------
 
 // передаем данные профиля в инпуты попапа редактирования профиля
@@ -130,11 +101,8 @@ function submitFormAuthor (evt) {
 // слушатели кнопок профиля
 buttonEdit.addEventListener('click', editValuePopupTypeEdit);
 
-// слушатели кнопок попапа редактирования профиля
+// слушатель кнопок попапа редактирования профиля
 formElementPopupTypeEdit.addEventListener('submit', submitFormAuthor);
-buttonClosePopupTypeEdit.addEventListener('click', () => {
-  popupTypeEdit.close();
-});
 
 // ПОПАП TYPE ADD ------------------------------------------------------------------------------------------
 // слушатели кнопок попапа добавления карточки
@@ -143,14 +111,4 @@ buttonAdd.addEventListener('click', () => {
   popupTypeAdd.open();
 });
 
-buttonClosePopupTypeAdd.addEventListener('click', () => {
-  popupTypeAdd.close();
-});
-
 formElementPopupTypeAdd.addEventListener('submit', submitFormCard);
-
-// ПОПАП ИЗОБРАЖЕНИЯ -------------------------------------------------------------------------------------------
-// слушатели кнопок попапа изображения карточки
-buttonClosePopupTypeImage.addEventListener('click', () => {
-  popupTypeImage.close();
-});

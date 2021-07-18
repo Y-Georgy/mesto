@@ -6,6 +6,7 @@ class Popup {
   open = () => {
     this._setEscListener();
     this._popup.classList.add('popup_opened');
+    this.setEventListeners();
   }
 
   close = () => {
@@ -25,6 +26,14 @@ class Popup {
     if (evt.key === 'Escape') {
       this.close();
     }
+  }
+
+  _setEventListeners = () => {
+    this._popup.addEventListener('click', (evt) => {
+      if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__icon-close')) {
+        this.close();
+      }
+    });
   }
 
 }
