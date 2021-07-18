@@ -46,7 +46,8 @@ export const buttonEdit = profile.querySelector('.profile__edit-button');
 export const buttonAdd = profile.querySelector('.profile__add-button');
 
 // попап редактирования профиля
-export const popupTypeEdit = document.querySelector('.popup_type_edit');
+export const popupTypeEditSelector = '.popup_type_edit';
+const popupTypeEdit = document.querySelector(popupTypeEditSelector);
 export const nameInput = popupTypeEdit.querySelector('.popup__input_type_name');
 export const jobInput = popupTypeEdit.querySelector('.popup__input_type_job');
 // кнопки попапа редактирования профиля
@@ -54,7 +55,8 @@ export const buttonClosePopupTypeEdit = popupTypeEdit.querySelector('.popup__ico
 export const formElementPopupTypeEdit = popupTypeEdit.querySelector('.popup__container');
 
 // попап добавления карточки
-export const popupTypeAdd = document.querySelector('.popup_type_add');
+export const popupTypeAddSelector = '.popup_type_add';
+const popupTypeAdd = document.querySelector(popupTypeAddSelector);
 export const titleInput = popupTypeAdd.querySelector('.popup__input_type_title');
 export const linkInput = popupTypeAdd.querySelector('.popup__input_type_link');
 // кнопки попапа добавления карточки
@@ -63,7 +65,8 @@ export const formElementPopupTypeAdd = popupTypeAdd.querySelector('.popup__conta
 // export const buttonSubmitPopupTypeAdd = popupTypeAdd.querySelector('.popup__submit-button');
 
 // попап изображения карточки
-export const popupTypeImage = document.querySelector('.popup_type_image');
+export const popupTypeImageSelector = '.popup_type_image'
+const popupTypeImage = document.querySelector(popupTypeImageSelector);
 export const popupImage = popupTypeImage.querySelector('.popup__image');
 export const popupImageSignature = popupTypeImage.querySelector('.popup__image-signature');
 export const buttonClosePopupTypeImage = popupTypeImage.querySelector('.popup__icon-close');

@@ -1,8 +1,12 @@
 import './index.css';
 import Section from '../components/Section.js';
+import Popup from '../components/Popup.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import {
+  popupTypeEditSelector,
+  popupTypeAddSelector,
+  popupTypeImageSelector,
   initialCards,
   config,
   popupList,
@@ -10,23 +14,25 @@ import {
   profileSubtitle,
   buttonEdit,
   buttonAdd,
-  popupTypeEdit,
   nameInput,
   jobInput,
   buttonClosePopupTypeEdit,
   formElementPopupTypeEdit,
-  popupTypeAdd,
   titleInput,
   linkInput,
   buttonClosePopupTypeAdd,
   formElementPopupTypeAdd,
-  popupTypeImage,
   popupImage,
   popupImageSignature,
   buttonClosePopupTypeImage,
   templateSelector,
   containerForCardsSelector
 } from '../utils/constants.js';
+
+// ПОПАПЫ ------------------------------------------------------------------------------------------------------------------------
+const popupTypeEdit = new Popup (popupTypeEditSelector);
+const popupTypeAdd = new Popup (popupTypeAddSelector);
+const popupTypeImage = new Popup (popupTypeImageSelector);
 
 // 1 и 2 new ЖИВАЯ ВАЛИДАЦИЯ ФОРМ ------------------------------------------------------------------------------------------------
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
@@ -41,7 +47,7 @@ const openPopupImage = (link, title) => {
   popupImage.src = link;
   popupImage.alt = title;
   popupImageSignature.textContent = title;
-  openPopup(popupTypeImage);
+  popupTypeImage.open();
 }
 
 function constructNewCard(data, templateSelector, openPopupImage) {
@@ -73,7 +79,7 @@ function submitFormCard (evt) {
   }
   const newCard = constructNewCard(dataNewCard, templateSelector, openPopupImage);
   cardsList.addItem(newCard);
-  closePopup(popupTypeAdd);
+  popupTypeAdd.close();
   formElementPopupTypeAdd.reset();
   formCardValidator.toggleButtonState();
 }
@@ -103,36 +109,6 @@ function setListenersToAllPopups (popupList) {
 
 setListenersToAllPopups(popupList);
 
-// 6 БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ESC -------------------------------------------------------------------------------
-function setEscListener() {
-  document.addEventListener('keydown', checkPressEscKey);
-};
-
-function removeEscListener() {
-  document.removeEventListener('keydown', checkPressEscKey);
-};
-
-function checkPressEscKey (evt) {
-  if (evt.key === 'Escape') {
-    const openedPopupNow = document.querySelector('.popup_opened');
-    closePopup(openedPopupNow);
-  }
-}
-
-// --------------------------------------------------------------------------------------------------------------------------
-
-// 7 открытие попапа
-function openPopup (popupType) {
-  popupType.classList.add('popup_opened');
-  setEscListener(); // устанавливаю слушатель ESC для закрытия попапа
-}
-
-// 8 закрытие попапа
-function closePopup (popupType) {
-  popupType.classList.remove('popup_opened');
-  removeEscListener(); // удаляю слушатель ESC для закрытия попапа
-}
-
 // 9 ПОПАП АВТОРА --------------------------------------------------------------------------------------------------
 
 // передаем данные профиля в инпуты попапа редактирования профиля
@@ -140,7 +116,7 @@ function editValuePopupTypeEdit () {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
   formAuthorValidator.clearErrorsMessage();
-  openPopup (popupTypeEdit);
+  popupTypeEdit.open();
 }
 
 // сохранение данных автора
@@ -148,7 +124,7 @@ function submitFormAuthor (evt) {
   evt.preventDefault();
   profileTitle.textContent = nameInput.value;
   profileSubtitle.textContent = jobInput.value;
-  closePopup(popupTypeEdit);
+  popupTypeEdit.close();
 }
 
 // слушатели кнопок профиля
@@ -157,18 +133,18 @@ buttonEdit.addEventListener('click', editValuePopupTypeEdit);
 // слушатели кнопок попапа редактирования профиля
 formElementPopupTypeEdit.addEventListener('submit', submitFormAuthor);
 buttonClosePopupTypeEdit.addEventListener('click', () => {
-  closePopup(popupTypeEdit);
+  popupTypeEdit.close();
 });
 
 // ПОПАП TYPE ADD ------------------------------------------------------------------------------------------
 // слушатели кнопок попапа добавления карточки
 buttonAdd.addEventListener('click', () => {
   formCardValidator.clearErrorsMessage();
-  openPopup(popupTypeAdd);
+  popupTypeAdd.open();
 });
 
 buttonClosePopupTypeAdd.addEventListener('click', () => {
-  closePopup(popupTypeAdd);
+  popupTypeAdd.close();
 });
 
 formElementPopupTypeAdd.addEventListener('submit', submitFormCard);
@@ -176,5 +152,5 @@ formElementPopupTypeAdd.addEventListener('submit', submitFormCard);
 // ПОПАП ИЗОБРАЖЕНИЯ -------------------------------------------------------------------------------------------
 // слушатели кнопок попапа изображения карточки
 buttonClosePopupTypeImage.addEventListener('click', () => {
-  closePopup(popupTypeImage);
+  popupTypeImage.close();
 });
