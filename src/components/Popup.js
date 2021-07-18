@@ -3,19 +3,19 @@ class Popup {
     this._popup = document.querySelector(popupSelector);
   }
 
-  open = () => {
+  open () {
     this._setEscListener();
     this._popup.classList.add('popup_opened');
     this._setEventListeners();
   }
 
-  close = () => {
+  close () {
     this._popup.classList.remove('popup_opened');
     this._removeEscListener();
     this._removeEventListeners();
   }
 
-  _setEscListener = () => {
+  _setEscListener () {
     document.addEventListener('keydown', this._handleEscClose);
   };
 
@@ -35,11 +35,11 @@ class Popup {
     }
   }
 
-  _setEventListeners = () => {
+  _setEventListeners () {
     this._popup.addEventListener('click', this._handlerClickClose);
   }
 
-  _removeEventListeners = () => {
+  _removeEventListeners () {
     this._popup.removeEventListener('click', this._handlerClickClose);
   }
 }

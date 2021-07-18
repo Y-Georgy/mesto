@@ -1,6 +1,7 @@
 import './index.css';
 import Section from '../components/Section.js';
 import Popup from '../components/Popup.js';
+import PopupWithImage from '../components/PopupWithImage.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import {
@@ -19,8 +20,6 @@ import {
   titleInput,
   linkInput,
   formElementPopupTypeAdd,
-  popupImage,
-  popupImageSignature,
   templateSelector,
   containerForCardsSelector
 } from '../utils/constants.js';
@@ -28,7 +27,6 @@ import {
 // ПОПАПЫ ------------------------------------------------------------------------------------------------------------------------
 const popupTypeEdit = new Popup (popupTypeEditSelector);
 const popupTypeAdd = new Popup (popupTypeAddSelector);
-const popupTypeImage = new Popup (popupTypeImageSelector);
 
 // 1 и 2 new ЖИВАЯ ВАЛИДАЦИЯ ФОРМ ------------------------------------------------------------------------------------------------
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
@@ -37,17 +35,17 @@ formAuthorValidator.enableValidation();
 const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
 
-// 3 new ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ -----------------------------------------------------------------
-// open popup image
-const openPopupImage = (link, title) => {
-  popupImage.src = link;
-  popupImage.alt = title;
-  popupImageSignature.textContent = title;
+// ---------------------------------------------------------------------------------------------------------------------------------
+
+function handleCardClick(data) {
+  const popupTypeImage = new PopupWithImage (data, popupTypeImageSelector);
   popupTypeImage.open();
 }
 
-function constructNewCard(data, templateSelector, openPopupImage) {
-  const newCard = new Card(data, templateSelector, openPopupImage);
+// 3 new ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ -----------------------------------------------------------------
+
+function constructNewCard(data, templateSelector, handleCardClick) {
+  const newCard = new Card(data, templateSelector, handleCardClick);
   return newCard.createCard();
 }
 
@@ -56,7 +54,7 @@ const cardsList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      const newCard = constructNewCard(item, templateSelector, openPopupImage);
+      const newCard = constructNewCard(item, templateSelector, handleCardClick);
       cardsList.addItem(newCard);
     }
   },
@@ -73,7 +71,7 @@ function submitFormCard (evt) {
     name: titleInput.value,
     link: linkInput.value
   }
-  const newCard = constructNewCard(dataNewCard, templateSelector, openPopupImage);
+  const newCard = constructNewCard(dataNewCard, templateSelector, handleCardClick);
   cardsList.addItem(newCard);
   popupTypeAdd.close();
   formElementPopupTypeAdd.reset();

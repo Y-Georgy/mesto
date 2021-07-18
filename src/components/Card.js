@@ -1,9 +1,9 @@
 class Card {
-  constructor (data, templateSelector, openPopupImage) {
+  constructor (data, templateSelector, handleCardClick) {
     this._templateElement = document.querySelector(templateSelector).content;
     this._title = data.name;
     this._link = data.link;
-    this._openPopupImage = openPopupImage;
+    this._handleCardClick = handleCardClick;
   }
 
   // клонируем template
@@ -31,7 +31,10 @@ class Card {
     this._buttonLike.addEventListener('click', this._likeCard)
     this._buttonDelete.addEventListener('click', this._deleteCard)
     this._imgElement.addEventListener('click', () => {
-      this._openPopupImage(this._link, this._title);
+      this._handleCardClick(
+        {link: this._link,
+        title: this._title}
+      );
     })
   }
 

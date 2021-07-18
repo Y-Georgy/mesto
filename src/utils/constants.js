@@ -63,8 +63,8 @@ export const formElementPopupTypeAdd = popupTypeAdd.querySelector('.popup__conta
 // попап изображения карточки
 export const popupTypeImageSelector = '.popup_type_image'
 const popupTypeImage = document.querySelector(popupTypeImageSelector);
-export const popupImage = popupTypeImage.querySelector('.popup__image');
-export const popupImageSignature = popupTypeImage.querySelector('.popup__image-signature');
+// export const popupImage = popupTypeImage.querySelector('.popup__image');
+// export const popupImageSignature = popupTypeImage.querySelector('.popup__image-signature');
 
 
 export const containerForCardsSelector = '.elements__list';
