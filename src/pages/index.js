@@ -1,4 +1,5 @@
 import './index.css';
+import Section from '../components/Section.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import {
@@ -19,23 +20,22 @@ import {
   linkInput,
   buttonClosePopupTypeAdd,
   formElementPopupTypeAdd,
-  //buttonSubmitPopupTypeAdd,
   popupTypeImage,
   popupImage,
   popupImageSignature,
   buttonClosePopupTypeImage,
-  elementsList,
-  templateSelector
+  templateSelector,
+  containerForCardsSelector
 } from '../utils/constants.js';
 
-// 1 и 2 ЖИВАЯ ВАЛИДАЦИЯ ФОРМ ------------------------------------------------------------------------------------------------
+// 1 и 2 new ЖИВАЯ ВАЛИДАЦИЯ ФОРМ ------------------------------------------------------------------------------------------------
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
 formAuthorValidator.enableValidation();
 
 const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
 
-// 3 ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ -----------------------------------------------------------------
+// 3 new ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ -----------------------------------------------------------------
 // open popup image
 const openPopupImage = (link, title) => {
   popupImage.src = link;
@@ -49,28 +49,36 @@ function constructNewCard(data, templateSelector, openPopupImage) {
   return newCard.createCard();
 }
 
-// проходим по массиву и добавляем на страницу новые карточки
-function renderElements(initialCards, elementsList) {
-  initialCards.forEach(function (item) {
-    elementsList.prepend(constructNewCard(item, templateSelector, openPopupImage));
-  });
-}
+// добавляем карточки из массива на страницу
+const cardsList = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const newCard = constructNewCard(item, templateSelector, openPopupImage);
+      cardsList.addItem(newCard);
+    }
+  },
+  containerForCardsSelector
+);
 
-// вызываем функцию добавления карточек
-renderElements(initialCards, elementsList);
+cardsList.rendererItems();
 
-// 4 ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ --------------------------------------------------------------------------------------
+// 4 new ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ --------------------------------------------------------------------------------------
+
 function submitFormCard (evt) {
   evt.preventDefault();
   const dataNewCard = {
     name: titleInput.value,
     link: linkInput.value
   }
-  elementsList.prepend(constructNewCard(dataNewCard, templateSelector, openPopupImage));
+  const newCard = constructNewCard(dataNewCard, templateSelector, openPopupImage);
+  cardsList.addItem(newCard);
   closePopup(popupTypeAdd);
   formElementPopupTypeAdd.reset();
   formCardValidator.toggleButtonState();
 }
+
+
 
 // 5 БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ОВЕРЛЕЙ -------------------------------------------------------------------------------------
 // функция установки слушателя по оверлею
