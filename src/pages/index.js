@@ -28,14 +28,14 @@ import {
   templateSelector
 } from '../utils/constants.js';
 
-// ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
+// 1 и 2 ЖИВАЯ ВАЛИДАЦИЯ ФОРМ ------------------------------------------------------------------------------------------------
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
 formAuthorValidator.enableValidation();
 
 const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
 
-// ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ
+// 3 ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ -----------------------------------------------------------------
 // open popup image
 const openPopupImage = (link, title) => {
   popupImage.src = link;
@@ -59,7 +59,7 @@ function renderElements(initialCards, elementsList) {
 // вызываем функцию добавления карточек
 renderElements(initialCards, elementsList);
 
-// ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
+// 4 ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ --------------------------------------------------------------------------------------
 function submitFormCard (evt) {
   evt.preventDefault();
   const dataNewCard = {
@@ -72,7 +72,7 @@ function submitFormCard (evt) {
   formCardValidator.toggleButtonState();
 }
 
-// БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ОВЕРЛЕЙ
+// 5 БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ОВЕРЛЕЙ -------------------------------------------------------------------------------------
 // функция установки слушателя по оверлею
 function setListenerOverlayClick(popup) {
   popup.addEventListener('click', (evt) => {
@@ -95,7 +95,7 @@ function setListenersToAllPopups (popupList) {
 
 setListenersToAllPopups(popupList);
 
-// БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ESC
+// 6 БЛОК ЗАКРЫТИЯ ПОПАПА ПО КЛИКУ НА ESC -------------------------------------------------------------------------------
 function setEscListener() {
   document.addEventListener('keydown', checkPressEscKey);
 };
@@ -111,17 +111,21 @@ function checkPressEscKey (evt) {
   }
 }
 
-// открытие попапа
+// --------------------------------------------------------------------------------------------------------------------------
+
+// 7 открытие попапа
 function openPopup (popupType) {
   popupType.classList.add('popup_opened');
   setEscListener(); // устанавливаю слушатель ESC для закрытия попапа
 }
 
-// закрытие попапа
+// 8 закрытие попапа
 function closePopup (popupType) {
   popupType.classList.remove('popup_opened');
   removeEscListener(); // удаляю слушатель ESC для закрытия попапа
 }
+
+// 9 ПОПАП АВТОРА --------------------------------------------------------------------------------------------------
 
 // передаем данные профиля в инпуты попапа редактирования профиля
 function editValuePopupTypeEdit () {
@@ -148,6 +152,7 @@ buttonClosePopupTypeEdit.addEventListener('click', () => {
   closePopup(popupTypeEdit);
 });
 
+// ПОПАП TYPE ADD ------------------------------------------------------------------------------------------
 // слушатели кнопок попапа добавления карточки
 buttonAdd.addEventListener('click', () => {
   formCardValidator.clearErrorsMessage();
@@ -160,6 +165,7 @@ buttonClosePopupTypeAdd.addEventListener('click', () => {
 
 formElementPopupTypeAdd.addEventListener('submit', submitFormCard);
 
+// ПОПАП ИЗОБРАЖЕНИЯ -------------------------------------------------------------------------------------------
 // слушатели кнопок попапа изображения карточки
 buttonClosePopupTypeImage.addEventListener('click', () => {
   closePopup(popupTypeImage);
