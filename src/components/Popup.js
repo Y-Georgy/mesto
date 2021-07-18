@@ -6,12 +6,13 @@ class Popup {
   open = () => {
     this._setEscListener();
     this._popup.classList.add('popup_opened');
-    this.setEventListeners();
+    this._setEventListeners();
   }
 
   close = () => {
     this._popup.classList.remove('popup_opened');
     this._removeEscListener();
+    this._removeEventListeners();
   }
 
   _setEscListener = () => {
@@ -28,14 +29,19 @@ class Popup {
     }
   }
 
-  _setEventListeners = () => {
-    this._popup.addEventListener('click', (evt) => {
-      if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__icon-close')) {
-        this.close();
-      }
-    });
+  _handlerClickClose = (evt) => {
+    if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__icon-close')) {
+      this.close();
+    }
   }
 
+  _setEventListeners = () => {
+    this._popup.addEventListener('click', this._handlerClickClose);
+  }
+
+  _removeEventListeners = () => {
+    this._popup.removeEventListener('click', this._handlerClickClose);
+  }
 }
 
 export default Popup;
