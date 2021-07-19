@@ -36,7 +36,7 @@ const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
 
 // ---------------------------------------------------------------------------------------------------------------------------------
-
+// Обработчик клика по изображению карточки (открытие попапа)
 function handleCardClick(data) {
   const popupTypeImage = new PopupWithImage (data, popupTypeImageSelector);
   popupTypeImage.open();
