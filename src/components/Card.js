@@ -31,10 +31,10 @@ class Card {
     this._buttonLike.addEventListener('click', this._likeCard)
     this._buttonDelete.addEventListener('click', this._deleteCard)
     this._imgElement.addEventListener('click', () => {
-      this._handleCardClick(
-        {link: this._link,
-        title: this._title}
-      );
+      this._handleCardClick({
+        link: this._link,
+        title: this._title
+      });
     })
   }
 

@@ -11,8 +11,6 @@ import {
   dataProfileSelectors,
   initialCards,
   config,
-  profileTitle,
-  profileSubtitle,
   buttonEdit,
   buttonAdd,
   nameInput,

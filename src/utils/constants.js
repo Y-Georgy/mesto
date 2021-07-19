@@ -41,12 +41,8 @@ export const dataProfileSelectors = {
   profileTitleSelector: '.profile__title',
   profileSubtitleSelector: '.profile__subtitle'
 }
-export const profileTitle = profile.querySelector(dataProfileSelectors.profileTitleSelector);
-export const profileSubtitle = profile.querySelector(dataProfileSelectors.profileSubtitleSelector);
 export const buttonEdit = profile.querySelector('.profile__edit-button');
 export const buttonAdd = profile.querySelector('.profile__add-button');
-
-
 
 // попап редактирования профиля
 export const popupTypeEditSelector = '.popup_type_edit';
@@ -56,11 +52,9 @@ export const jobInput = popupTypeEdit.querySelector('.popup__input_type_job');
 
 // попап добавления карточки
 export const popupTypeAddSelector = '.popup_type_add';
-const popupTypeAdd = document.querySelector(popupTypeAddSelector);
 
 // попап изображения карточки
-export const popupTypeImageSelector = '.popup_type_image'
-const popupTypeImage = document.querySelector(popupTypeImageSelector);
+export const popupTypeImageSelector = '.popup_type_image';
 
 export const containerForCardsSelector = '.elements__list';
 // Берем template
