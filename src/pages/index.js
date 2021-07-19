@@ -1,7 +1,7 @@
 import './index.css';
 import Section from '../components/Section.js';
-import Popup from '../components/Popup.js';
 import PopupWithImage from '../components/PopupWithImage.js';
+import PopupWithForm from '../components/PopupWithForm.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import {
@@ -16,17 +16,9 @@ import {
   buttonAdd,
   nameInput,
   jobInput,
-  formElementPopupTypeEdit,
-  titleInput,
-  linkInput,
-  formElementPopupTypeAdd,
   templateSelector,
   containerForCardsSelector
 } from '../utils/constants.js';
-
-// ПОПАПЫ ------------------------------------------------------------------------------------------------------------------------
-const popupTypeEdit = new Popup (popupTypeEditSelector);
-const popupTypeAdd = new Popup (popupTypeAddSelector);
 
 // 1 и 2 new ЖИВАЯ ВАЛИДАЦИЯ ФОРМ ------------------------------------------------------------------------------------------------
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
@@ -42,14 +34,12 @@ function handleCardClick(data) {
   popupTypeImage.open();
 }
 
-// 3 new ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ -----------------------------------------------------------------
-
+// ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ -----------------------------------------------------------------
 function constructNewCard(data, templateSelector, handleCardClick) {
   const newCard = new Card(data, templateSelector, handleCardClick);
   return newCard.createCard();
 }
 
-// добавляем карточки из массива на страницу
 const cardsList = new Section(
   {
     items: initialCards,
@@ -63,50 +53,47 @@ const cardsList = new Section(
 
 cardsList.rendererItems();
 
-// 4 new ДОБАВЛЕНИЕ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ --------------------------------------------------------------------------------------
+// ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ --------------------------------------------------------------------------------------
+const popupTypeAdd = new PopupWithForm (
+  function submitFormCard (evt) {
+    evt.preventDefault();
+    const dataCard = popupTypeAdd.getInputValues();
+    const dataNewCard = {
+      name: dataCard.cardTitle,
+      link: dataCard.cardLink
+    }
+    const newCard = constructNewCard(dataNewCard, templateSelector, handleCardClick);
+    cardsList.addItem(newCard);
+    popupTypeAdd.close();
+    formCardValidator.toggleButtonState();
+  },
+  popupTypeAddSelector);
 
-function submitFormCard (evt) {
-  evt.preventDefault();
-  const dataNewCard = {
-    name: titleInput.value,
-    link: linkInput.value
-  }
-  const newCard = constructNewCard(dataNewCard, templateSelector, handleCardClick);
-  cardsList.addItem(newCard);
-  popupTypeAdd.close();
-  formElementPopupTypeAdd.reset();
-  formCardValidator.toggleButtonState();
-}
+// ПОПАП АВТОРА --------------------------------------------------------------------------------------------------
+const popupTypeEdit = new PopupWithForm (
+  function submitFormAuthor (evt) {
+    evt.preventDefault();
+    const dataAuthor = popupTypeEdit.getInputValues();
+    profileTitle.textContent = dataAuthor.authorName;
+    profileSubtitle.textContent = dataAuthor.authorJob;
+    popupTypeEdit.close();
+  },
+  popupTypeEditSelector);
 
-// 9 ПОПАП АВТОРА --------------------------------------------------------------------------------------------------
-
+// КНОПКИ -----------------------------------------------------------------
 // передаем данные профиля в инпуты попапа редактирования профиля
-function editValuePopupTypeEdit () {
+function handlerClickButtonEdit () {
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileSubtitle.textContent;
   formAuthorValidator.clearErrorsMessage();
   popupTypeEdit.open();
 }
+// слушатель кнопки редактирования профиля
+buttonEdit.addEventListener('click', handlerClickButtonEdit);
 
-// сохранение данных автора
-function submitFormAuthor (evt) {
-  evt.preventDefault();
-  profileTitle.textContent = nameInput.value;
-  profileSubtitle.textContent = jobInput.value;
-  popupTypeEdit.close();
-}
-
-// слушатели кнопок профиля
-buttonEdit.addEventListener('click', editValuePopupTypeEdit);
-
-// слушатель кнопок попапа редактирования профиля
-formElementPopupTypeEdit.addEventListener('submit', submitFormAuthor);
-
-// ПОПАП TYPE ADD ------------------------------------------------------------------------------------------
-// слушатели кнопок попапа добавления карточки
+// слушатель кнопки добавления карточки
 buttonAdd.addEventListener('click', () => {
   formCardValidator.clearErrorsMessage();
   popupTypeAdd.open();
 });
 
-formElementPopupTypeAdd.addEventListener('submit', submitFormCard);

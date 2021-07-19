@@ -60,7 +60,6 @@ class FormValidator {
 
   // устанавливаю слушатели всех инпутов и запускаю методы
   _setInputListeners = () => {
-    //
     this.toggleButtonState(); // до установки слушателей устанавливаю активность/неакт-ть кнопки submit
     this._inputElements.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
@@ -72,9 +71,9 @@ class FormValidator {
 
   // публичный метод валидации всех форм
   enableValidation = () => {
-    this._formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-    });
+    // this._formElement.addEventListener('submit', (evt) => {
+    //   evt.preventDefault();
+    // });
     this._setInputListeners();
   }
 
