@@ -8,6 +8,7 @@ import {
   popupTypeEditSelector,
   popupTypeAddSelector,
   popupTypeImageSelector,
+  dataProfileSelectors,
   initialCards,
   config,
   profileTitle,
@@ -19,6 +20,7 @@ import {
   templateSelector,
   containerForCardsSelector
 } from '../utils/constants.js';
+import UserInfo from '../components/UserInfo';
 
 // 1 и 2 new ЖИВАЯ ВАЛИДАЦИЯ ФОРМ ------------------------------------------------------------------------------------------------
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
@@ -69,13 +71,15 @@ const popupTypeAdd = new PopupWithForm (
   },
   popupTypeAddSelector);
 
+// ПРОФИЛЬ АВТОРА ------------------------------------------------------------------------------------------------
+const userInfo = new UserInfo(dataProfileSelectors);
+
 // ПОПАП АВТОРА --------------------------------------------------------------------------------------------------
 const popupTypeEdit = new PopupWithForm (
   function submitFormAuthor (evt) {
     evt.preventDefault();
     const dataAuthor = popupTypeEdit.getInputValues();
-    profileTitle.textContent = dataAuthor.authorName;
-    profileSubtitle.textContent = dataAuthor.authorJob;
+    userInfo.setUserInfo(dataAuthor);
     popupTypeEdit.close();
   },
   popupTypeEditSelector);
@@ -83,8 +87,9 @@ const popupTypeEdit = new PopupWithForm (
 // КНОПКИ -----------------------------------------------------------------
 // передаем данные профиля в инпуты попапа редактирования профиля
 function handlerClickButtonEdit () {
-  nameInput.value = profileTitle.textContent;
-  jobInput.value = profileSubtitle.textContent;
+  const userData = userInfo.getUserInfo();
+  nameInput.value = userData.name;
+  jobInput.value = userData.job;
   formAuthorValidator.clearErrorsMessage();
   popupTypeEdit.open();
 }

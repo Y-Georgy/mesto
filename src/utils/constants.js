@@ -37,10 +37,16 @@ export const config = {
 
 // профиль автора
 const profile = document.querySelector('.profile');
-export const profileTitle = profile.querySelector('.profile__title');
-export const profileSubtitle = profile.querySelector('.profile__sublitle');
+export const dataProfileSelectors = {
+  profileTitleSelector: '.profile__title',
+  profileSubtitleSelector: '.profile__subtitle'
+}
+export const profileTitle = profile.querySelector(dataProfileSelectors.profileTitleSelector);
+export const profileSubtitle = profile.querySelector(dataProfileSelectors.profileSubtitleSelector);
 export const buttonEdit = profile.querySelector('.profile__edit-button');
 export const buttonAdd = profile.querySelector('.profile__add-button');
+
+
 
 // попап редактирования профиля
 export const popupTypeEditSelector = '.popup_type_edit';
