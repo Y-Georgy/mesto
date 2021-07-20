@@ -55,9 +55,7 @@ cardsList.rendererItems();
 
 // ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ --------------------------------------------------------------------------------------
 const popupTypeAdd = new PopupWithForm (
-  function submitFormCard (evt) {
-    evt.preventDefault();
-    const dataCard = popupTypeAdd.getInputValues();
+  function handlerSubmitFormCard (dataCard) {
     const dataNewCard = {
       name: dataCard.cardTitle,
       link: dataCard.cardLink
@@ -74,9 +72,7 @@ const userInfo = new UserInfo(dataProfileSelectors);
 
 // ПОПАП АВТОРА --------------------------------------------------------------------------------------------------
 const popupTypeEdit = new PopupWithForm (
-  function submitFormAuthor (evt) {
-    evt.preventDefault();
-    const dataAuthor = popupTypeEdit.getInputValues();
+  function handlerSubmitFormAuthor (dataAuthor) {
     userInfo.setUserInfo(dataAuthor);
     popupTypeEdit.close();
   },
