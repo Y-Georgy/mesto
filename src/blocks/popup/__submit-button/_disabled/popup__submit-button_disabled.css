@@ -3,3 +3,7 @@
   color: #ccc;
   background-color: #fff;
 }
+
+.popup__submit-button_disabled:hover {
+  cursor: default;
+}

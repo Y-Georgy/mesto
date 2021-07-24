@@ -1,17 +1,26 @@
 export default class Api {
-  constructor(url) {
-    this._url = url;
+  constructor(config) {
+    this._url = config.url; //https://mesto.nomoreparties.co/v1/cohort-26/cards
+    this._headers = config.headers;
   }
 
-  call() {
-    fetch(this._url, {
-      headers: {
-        authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
-      }
+  getData() {
+    return fetch(this._url, {
+      headers: this._headers,
     })
-      .then(res => res.json())
-      .then((result) => {
-        console.log(result);
-    });
+      .then(this._handleResponse)
+     .catch(this._catchError);
+  }
+
+  _handleResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка: ${res.status}`);
+
+  }
+
+  _catchError(err) {
+    console.log(err);
   }
 }

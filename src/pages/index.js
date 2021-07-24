@@ -18,13 +18,19 @@ import {popupTypeEditSelector,
   jobInput,
   templateSelector,
   containerForCardsSelector,
-  urlApi
+  configApi,
+  profileTitle,
+  profileSubtitle
 } from '../utils/constants.js';
 
 // API
-const api = new Api(urlApi);
-api.call();
+const api = new Api(configApi);
+const apiData = api.getData();
 
+apiData.then(respons => {
+  // profileTitle.textContent = respons.name;
+  // profileSubtitle.textContent = respons.about;
+});
 
 // ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);

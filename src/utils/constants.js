@@ -41,6 +41,9 @@ export const dataProfileSelectors = {
   profileTitleSelector: '.profile__title',
   profileSubtitleSelector: '.profile__subtitle'
 }
+export const profileTitle = document.querySelector(dataProfileSelectors.profileTitleSelector);
+export const profileSubtitle = document.querySelector(dataProfileSelectors.profileSubtitleSelector);
+
 export const buttonEdit = profile.querySelector('.profile__edit-button');
 export const buttonAdd = profile.querySelector('.profile__add-button');
 
@@ -60,4 +63,9 @@ export const containerForCardsSelector = '.elements__list';
 // Берем template
 export const templateSelector = '.element-template';
 
-export const urlApi = 'https://mesto.nomoreparties.co/v1/cohort-26/cards';
+export const configApi = {
+  url: 'https://nomoreparties.co/v1/cohort-26/users/me',
+  headers: {
+    authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
+  }
+}
