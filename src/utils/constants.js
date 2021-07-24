@@ -59,3 +59,5 @@ export const popupTypeImageSelector = '.popup_type_image';
 export const containerForCardsSelector = '.elements__list';
 // Берем template
 export const templateSelector = '.element-template';
+
+export const urlApi = 'https://mesto.nomoreparties.co/v1/cohort-26/cards';

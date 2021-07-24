@@ -5,8 +5,8 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo';
-import {
-  popupTypeEditSelector,
+import Api from '../components/Api.js';
+import {popupTypeEditSelector,
   popupTypeAddSelector,
   popupTypeImageSelector,
   dataProfileSelectors,
@@ -17,8 +17,14 @@ import {
   nameInput,
   jobInput,
   templateSelector,
-  containerForCardsSelector
+  containerForCardsSelector,
+  urlApi
 } from '../utils/constants.js';
+
+// API
+const api = new Api(urlApi);
+api.call();
+
 
 // ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
