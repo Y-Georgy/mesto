@@ -5,7 +5,7 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo';
-import Api from '../components/Api.js';
+//import Api from '../components/Api.js';
 import {popupTypeEditSelector,
   popupTypeAddSelector,
   popupTypeImageSelector,
@@ -24,13 +24,13 @@ import {popupTypeEditSelector,
 } from '../utils/constants.js';
 
 // API
-const api = new Api(configApi);
-const apiData = api.getData();
+// const api = new Api(configApi);
+// const apiData = api.getData();
 
-apiData.then(respons => {
-  // profileTitle.textContent = respons.name;
-  // profileSubtitle.textContent = respons.about;
-});
+// apiData.then(respons => {
+//   // profileTitle.textContent = respons.name;
+//   // profileSubtitle.textContent = respons.about;
+// });
 
 // ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
@@ -71,6 +71,7 @@ const popupTypeAdd = new PopupWithForm (
       name: dataCard.cardTitle,
       link: dataCard.cardLink
     }
+    console.log(dataNewCard);
     const newCard = constructNewCard(dataNewCard, templateSelector, handleCardClick);
     cardsList.addItem(newCard);
     popupTypeAdd.close();
