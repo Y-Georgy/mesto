@@ -5,12 +5,11 @@ import PopupWithForm from '../components/PopupWithForm.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo';
-//import Api from '../components/Api.js';
+import Api from '../components/Api.js';
 import {popupTypeEditSelector,
   popupTypeAddSelector,
   popupTypeImageSelector,
   dataProfileSelectors,
-  initialCards,
   config,
   buttonEdit,
   buttonAdd,
@@ -18,19 +17,25 @@ import {popupTypeEditSelector,
   jobInput,
   templateSelector,
   containerForCardsSelector,
-  configApi,
   profileTitle,
-  profileSubtitle
+  profileSubtitle,
+  profileAvatar
 } from '../utils/constants.js';
 
-// API
-// const api = new Api(configApi);
-// const apiData = api.getData();
+// ----------------------API данные профиля ----------------------
+const api = new Api({
+    url: 'https://nomoreparties.co/v1/cohort-26/users/me',
+    headers: {
+      authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
+    }
+  });
+const apiData = api.getData();
 
-// apiData.then(respons => {
-//   // profileTitle.textContent = respons.name;
-//   // profileSubtitle.textContent = respons.about;
-// });
+apiData.then(respons => {
+  profileTitle.textContent = respons.name;
+  profileSubtitle.textContent = respons.about;
+  profileAvatar.src = respons.avatar;
+});
 
 // ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
@@ -45,24 +50,35 @@ function handleCardClick(data) {
   popupTypeImage.open();
 }
 
-// ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ
+// ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ с API
 function constructNewCard(data, templateSelector, handleCardClick) {
   const newCard = new Card(data, templateSelector, handleCardClick);
   return newCard.createCard();
 }
 
-const cardsList = new Section(
-  {
-    items: initialCards,
-    renderer: (item) => {
-      const newCard = constructNewCard(item, templateSelector, handleCardClick);
-      cardsList.addItem(newCard);
-    }
-  },
-  containerForCardsSelector
-);
+const apiCards = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-26/cards',
+  headers: {
+    authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
+  }
+});
+apiCards.getData().then(respons => {
+  const cardsList = new Section(
+    {
+      items: respons,
+      renderer: (item) => {
+        const newCard = constructNewCard(item, templateSelector, handleCardClick);
+        cardsList.addItem(newCard);
+      }
+    },
+    containerForCardsSelector
+  );
 
-cardsList.rendererItems();
+  cardsList.rendererItems();
+});
+
+
+
 
 // ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
 const popupTypeAdd = new PopupWithForm (
@@ -71,7 +87,6 @@ const popupTypeAdd = new PopupWithForm (
       name: dataCard.cardTitle,
       link: dataCard.cardLink
     }
-    console.log(dataNewCard);
     const newCard = constructNewCard(dataNewCard, templateSelector, handleCardClick);
     cardsList.addItem(newCard);
     popupTypeAdd.close();
