@@ -2,6 +2,8 @@ export default class Api {
   constructor(config) {
     this._url = config.url;
     this._headers = config.headers;
+    this._method = config.method;
+    this._body = config.body;
   }
 
   getData() {
@@ -24,9 +26,11 @@ export default class Api {
     console.log(err);
   }
 
-  getCards() {
+  callToServer() {
     return fetch(this._url, {
+      method: this._method,
       headers: this._headers,
+      body: this._body
     })
     .then(this._handleResponse)
     .catch(this._catchError);

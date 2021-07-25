@@ -12,9 +12,9 @@ export default class UserInfo {
     return userData;
   }
 
-  setUserInfo ({authorName: name, authorJob: job}) {
+  setUserInfo ({name, about}) {
     this._prifileTitle.textContent = name;
-    this._prifileSubtitle.textContent = job;
+    this._prifileSubtitle.textContent = about;
   }
 
 }

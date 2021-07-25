@@ -77,31 +77,49 @@ apiCards.getData().then(respons => {
   cardsList.rendererItems();
 });
 
-
-
-
 // ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
 const popupTypeAdd = new PopupWithForm (
   function handlerSubmitFormCard (dataCard) {
-    const dataNewCard = {
-      name: dataCard.cardTitle,
-      link: dataCard.cardLink
-    }
-    const newCard = constructNewCard(dataNewCard, templateSelector, handleCardClick);
-    cardsList.addItem(newCard);
-    popupTypeAdd.close();
-    formCardValidator.toggleButtonState();
+    const newCardApi = new Api({
+      url: 'https://mesto.nomoreparties.co/v1/cohort-26/cards',
+      method: 'POST',
+      headers: {
+        authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataCard)
+    });
+    const addNewServerCard = newCardApi.callToServer();
+    addNewServerCard.then(respons => {
+      const newCard = constructNewCard(respons, templateSelector, handleCardClick);
+      const cardsList = new Section({},containerForCardsSelector);
+      cardsList.addItem(newCard);
+      popupTypeAdd.close();
+      formCardValidator.toggleButtonState();
+    });
   },
   popupTypeAddSelector);
 
 // ПРОФИЛЬ АВТОРА
 const userInfo = new UserInfo(dataProfileSelectors);
 
-// ПОПАП АВТОРА
+// ПОПАП АВТОРА API
 const popupTypeEdit = new PopupWithForm (
   function handlerSubmitFormAuthor (dataAuthor) {
-    userInfo.setUserInfo(dataAuthor);
-    popupTypeEdit.close();
+    const serverProfile = new Api({
+      url: 'https://mesto.nomoreparties.co/v1/cohort-26/users/me',
+      method: 'PATCH',
+      headers: {
+        authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataAuthor)
+    });
+    const editServerProfile = serverProfile.callToServer();
+    editServerProfile.then(respons => {
+      userInfo.setUserInfo(respons);
+      popupTypeEdit.close();
+    });
   },
   popupTypeEditSelector);
 
