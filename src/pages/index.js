@@ -84,7 +84,7 @@ const userInfo = new UserInfo(dataProfileSelectors);
 
 // Получаем API данные профиля
 const getProfileInfoApi = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-26/users/me',
+  url: 'https://nomoreparties.co/v1/cohort-26/users/me',
   headers: {
     authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
   }

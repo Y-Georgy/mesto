@@ -4,6 +4,7 @@ class Card {
     this._title = data.name;
     this._link = data.link;
     this._handleCardClick = handleCardClick;
+    this._likes = data.likes;
   }
 
   // клонируем template
@@ -17,6 +18,7 @@ class Card {
     this._titleElement = this._cardNewElement.querySelector('.element__title');
     this._buttonLike = this._cardNewElement.querySelector('.element__icon-like');
     this._buttonDelete = this._cardNewElement.querySelector('.element__icon-delete');
+    this._likeQuantity = this._cardNewElement.querySelector('.element__like-quantity');
   }
 
   // наполняем данными карточку
@@ -24,6 +26,7 @@ class Card {
     this._imgElement.src = this._link;
     this._imgElement.alt = this._title;
     this._titleElement.textContent = this._title;
+    this._likeQuantity.textContent = this._likes.length;
   }
 
   // устанавливаем слушатели
