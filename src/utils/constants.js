@@ -48,14 +48,11 @@ export const profileAvatar = document.querySelector('.profile__avatar');
 export const buttonEdit = profile.querySelector('.profile__edit-button');
 export const buttonAdd = profile.querySelector('.profile__add-button');
 
-// попап редактирования профиля
+// попапы
 export const popupTypeEditSelector = '.popup_type_edit';
-
-// попап добавления карточки
 export const popupTypeAddSelector = '.popup_type_add';
-
-// попап изображения карточки
 export const popupTypeImageSelector = '.popup_type_image';
+export const popupTypeConfirmSelector = '.popup_type_confirm';
 
 // контейнер для карточек
 export const containerForCardsSelector = '.elements__list';

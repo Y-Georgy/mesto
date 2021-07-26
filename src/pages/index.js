@@ -9,6 +9,7 @@ import Api from '../components/Api.js';
 import {popupTypeEditSelector,
   popupTypeAddSelector,
   popupTypeImageSelector,
+  popupTypeConfirmSelector,
   dataProfileSelectors,
   config,
   buttonEdit,
