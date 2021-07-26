@@ -33,30 +33,35 @@ formCardValidator.enableValidation();
 const handlersCardClick = {
   handleDeleteClick: (cardId, cardElement) => {
     const popupTypeConfirm = new PopupWithSubmit(
-      function handlerSubmitForm () { // принять фукцию?
-
-        // ЗДЕСЬ ДЕЛАЕМ ЗАПРОС НА СЕРВЕР ДЛЯ УДАЛЕНИЯ КАРТОЧКИ
-
-        //https://mesto.nomoreparties.co/v1/cohort-26/cards/cardId
-
-        //console.log();
+      function handlerSubmitForm () {
         const deleteCard = new Api({
           url: `https://mesto.nomoreparties.co/v1/cohort-26/cards/${cardId}`,
           headers: {
             authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
-            'Content-Type': 'application/json'
           },
         });
         deleteCard.deleteCardFromServer();
-
-        //console.log(newCardElement);
         cardElement.remove();
         popupTypeConfirm.close();
       },
       popupTypeConfirmSelector);
     popupTypeConfirm.open();
   },
-  handleLikeClick: () => {},
+  handleLikeClick: (cardId, likeActive) => {
+    const likeCard = new Api({
+      url: `https://mesto.nomoreparties.co/v1/cohort-26/cards/likes/${cardId}`,
+      headers: {
+        authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
+      },
+    });
+    if (likeActive) {
+      likeCard.LikeCardApi('DELETE')
+        .then(res => newCard.test(res));
+    } else {
+      likeCard.LikeCardApi('PUT')
+        .then(res => newCard.test(res));
+    }
+  },
   handleImgClick: (data) => {
     const popupTypeImage = new PopupWithImage(data, popupTypeImageSelector);
     popupTypeImage.open();
@@ -158,18 +163,3 @@ buttonAdd.addEventListener('click', () => {
   formCardValidator.clearErrorsMessage();
   popupTypeAdd.open();
 });
-
-
-
-
-
-
-
-
-// {
-//   data: { },
-//   handleCardClick: () => { },
-//   handleLikeClick: (card) => { },
-//   handleDeleteIconClick: (card) => { },
-//   templateSelector
-// }

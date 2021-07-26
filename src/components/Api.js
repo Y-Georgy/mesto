@@ -2,8 +2,6 @@ export default class Api {
   constructor(config) {
     this._url = config.url;
     this._headers = config.headers;
-    this._method = config.method;
-    this._body = config.body;
   }
 
   getData() {
@@ -19,7 +17,6 @@ export default class Api {
       return res.json();
     }
     return Promise.reject(`Ошибка: ${res.status}`);
-
   }
 
   _catchError(err) {
@@ -54,4 +51,15 @@ export default class Api {
     .then(this._handleResponse)
     .catch(this._catchError);
   }
+
+  LikeCardApi(methodApi) {
+    return fetch(this._url, {
+      method: methodApi,
+      headers: this._headers
+    })
+    .then(this._handleResponse)
+    .catch(this._catchError);
+  }
+
+
 }

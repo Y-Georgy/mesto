@@ -44,9 +44,21 @@ class Card {
     this._likeQuantity.textContent = this._likes.length;
   }
 
+  test(message) {
+    console.log(message)
+  }
+
   // устанавливаем слушатели
   _setEventListeners = () => {
-    this._buttonLike.addEventListener('click', this._likeCard)
+    this._buttonLike.addEventListener('click', () => {
+      if (this._buttonLike.classList.contains('element__icon-like_active')) {
+        this._handleLikeClick(this.cardId, true);
+        this._buttonLike.classList.remove('element__icon-like_active');
+      } else {
+        this._handleLikeClick(this.cardId, false);
+        this._buttonLike.classList.add('element__icon-like_active');
+      }
+    })
     if (this._flag) {
       console.log('Есть моя карточка');
       this._buttonDelete.addEventListener('click', () => {
@@ -62,9 +74,9 @@ class Card {
   }
 
   // like card
-  _likeCard = () => {
-    this._buttonLike.classList.toggle('element__icon-like_active');
-  }
+  // _likeCard = () => {
+  //   this._buttonLike.classList.toggle('element__icon-like_active');
+  // }
 
   // delete card
   // _deleteCard = () => {
