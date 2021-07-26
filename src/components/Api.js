@@ -26,11 +26,21 @@ export default class Api {
     console.log(err);
   }
 
-  callToServer() {
+  addCardToServer(dataCard) {
     return fetch(this._url, {
-      method: this._method,
+      method: 'POST',
       headers: this._headers,
-      body: this._body
+      body: JSON.stringify(dataCard)
+    })
+    .then(this._handleResponse)
+    .catch(this._catchError);
+  }
+
+  addProfileInfoToServer(dataNewAuthor) {
+    return fetch(this._url, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify(dataNewAuthor)
     })
     .then(this._handleResponse)
     .catch(this._catchError);

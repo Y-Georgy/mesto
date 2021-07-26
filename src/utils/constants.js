@@ -41,18 +41,15 @@ export const dataProfileSelectors = {
   profileTitleSelector: '.profile__title',
   profileSubtitleSelector: '.profile__subtitle'
 }
-export const profileTitle = document.querySelector(dataProfileSelectors.profileTitleSelector);
-export const profileSubtitle = document.querySelector(dataProfileSelectors.profileSubtitleSelector);
+// аватар
 export const profileAvatar = document.querySelector('.profile__avatar');
 
+// кнопки
 export const buttonEdit = profile.querySelector('.profile__edit-button');
 export const buttonAdd = profile.querySelector('.profile__add-button');
 
 // попап редактирования профиля
 export const popupTypeEditSelector = '.popup_type_edit';
-const popupTypeEdit = document.querySelector(popupTypeEditSelector);
-export const nameInput = popupTypeEdit.querySelector('.popup__input_type_name');
-export const jobInput = popupTypeEdit.querySelector('.popup__input_type_job');
 
 // попап добавления карточки
 export const popupTypeAddSelector = '.popup_type_add';
@@ -60,6 +57,8 @@ export const popupTypeAddSelector = '.popup_type_add';
 // попап изображения карточки
 export const popupTypeImageSelector = '.popup_type_image';
 
+// контейнер для карточек
 export const containerForCardsSelector = '.elements__list';
-// Берем template
+
+// template
 export const templateSelector = '.element-template';

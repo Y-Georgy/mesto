@@ -13,29 +13,10 @@ import {popupTypeEditSelector,
   config,
   buttonEdit,
   buttonAdd,
-  nameInput,
-  jobInput,
   templateSelector,
   containerForCardsSelector,
-  profileTitle,
-  profileSubtitle,
   profileAvatar
 } from '../utils/constants.js';
-
-// ----------------------API данные профиля ----------------------
-const api = new Api({
-    url: 'https://nomoreparties.co/v1/cohort-26/users/me',
-    headers: {
-      authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
-    }
-  });
-const apiData = api.getData();
-
-apiData.then(respons => {
-  profileTitle.textContent = respons.name;
-  profileSubtitle.textContent = respons.about;
-  profileAvatar.src = respons.avatar;
-});
 
 // ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
@@ -82,14 +63,12 @@ const popupTypeAdd = new PopupWithForm (
   function handlerSubmitFormCard (dataCard) {
     const newCardApi = new Api({
       url: 'https://mesto.nomoreparties.co/v1/cohort-26/cards',
-      method: 'POST',
       headers: {
         authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(dataCard)
     });
-    const addNewServerCard = newCardApi.callToServer();
+    const addNewServerCard = newCardApi.addCardToServer(dataCard);
     addNewServerCard.then(respons => {
       const newCard = constructNewCard(respons, templateSelector, handleCardClick);
       const cardsList = new Section({},containerForCardsSelector);
@@ -100,22 +79,33 @@ const popupTypeAdd = new PopupWithForm (
   },
   popupTypeAddSelector);
 
-// ПРОФИЛЬ АВТОРА
+// ----------------- ПРОФИЛЬ АВТОРА ---------------------
 const userInfo = new UserInfo(dataProfileSelectors);
+
+// Получаем API данные профиля
+const getProfileInfoApi = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-26/users/me',
+  headers: {
+    authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
+  }
+});
+  getProfileInfoApi.getData()
+  .then(respons => {
+  userInfo.setUserInfo(respons);
+  profileAvatar.src = respons.avatar;
+});
 
 // ПОПАП АВТОРА API
 const popupTypeEdit = new PopupWithForm (
   function handlerSubmitFormAuthor (dataAuthor) {
     const serverProfile = new Api({
       url: 'https://mesto.nomoreparties.co/v1/cohort-26/users/me',
-      method: 'PATCH',
       headers: {
         authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(dataAuthor)
+      }
     });
-    const editServerProfile = serverProfile.callToServer();
+    const editServerProfile = serverProfile.addProfileInfoToServer(dataAuthor);
     editServerProfile.then(respons => {
       userInfo.setUserInfo(respons);
       popupTypeEdit.close();
@@ -125,9 +115,7 @@ const popupTypeEdit = new PopupWithForm (
 
 // ОТКРЫТИЕ ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
 function handlerClickButtonEdit () {
-  const userData = userInfo.getUserInfo();
-  nameInput.value = userData.name;
-  jobInput.value = userData.job;
+  popupTypeEdit.setInputValues(userInfo.getUserInfo());
   formAuthorValidator.clearErrorsMessage();
   popupTypeEdit.open();
 }
