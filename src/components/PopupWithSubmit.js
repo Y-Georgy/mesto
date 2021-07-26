@@ -1,6 +1,6 @@
 import Popup from "./Popup";
 
-class PopupWithSubmit extends Popup {
+export default class PopupWithSubmit extends Popup {
   constructor(handlerSubmitForm, popupSelector) {
     super(popupSelector);
     this._handlerSubmitForm = handlerSubmitForm;
@@ -9,7 +9,7 @@ class PopupWithSubmit extends Popup {
 
   _handlerSubmit = (evt) => {
     evt.preventDefault();
-    this._handlerSubmitForm();
+    this._handlerSubmitForm(); // передать функцию?
   }
 
   _setEventListeners () {

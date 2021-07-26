@@ -1,10 +1,15 @@
 class Card {
-  constructor (data, templateSelector, handleCardClick) {
+  constructor (data, templateSelector, {handleDeleteClick, handleLikeClick, handleImgClick}) {
     this._templateElement = document.querySelector(templateSelector).content;
     this._title = data.name;
     this._link = data.link;
-    this._handleCardClick = handleCardClick;
+    this._handleImgClick = handleImgClick;
+    this._handleLikeClick = handleLikeClick;
+    this._handleDeleteClick = handleDeleteClick;
     this._likes = data.likes;
+    this._ownerId = data.owner._id;
+    this.cardId = data._id
+    //this._data = data;
   }
 
   // клонируем template
@@ -16,9 +21,19 @@ class Card {
   _takeElementsCard = () => {
     this._imgElement = this._cardNewElement.querySelector('.element__img');
     this._titleElement = this._cardNewElement.querySelector('.element__title');
+    this._likeQuantity = this._cardNewElement.querySelector('.element__like-quantity');
     this._buttonLike = this._cardNewElement.querySelector('.element__icon-like');
     this._buttonDelete = this._cardNewElement.querySelector('.element__icon-delete');
-    this._likeQuantity = this._cardNewElement.querySelector('.element__like-quantity');
+  }
+
+  // сверяем id карточки и мой id
+  _compareOwner = () => {
+    if (this._ownerId !== '5e3543d6c22b20fed4882e3e') {
+      this._buttonDelete.remove();
+      this._flag = false;
+    } else {
+      this._flag = true;
+    }
   }
 
   // наполняем данными карточку
@@ -32,9 +47,14 @@ class Card {
   // устанавливаем слушатели
   _setEventListeners = () => {
     this._buttonLike.addEventListener('click', this._likeCard)
-    this._buttonDelete.addEventListener('click', this._deleteCard)
+    if (this._flag) {
+      console.log('Есть моя карточка');
+      this._buttonDelete.addEventListener('click', () => {
+        this._handleDeleteClick(this.cardId, this._cardNewElement);
+      });
+    }
     this._imgElement.addEventListener('click', () => {
-      this._handleCardClick({
+      this._handleImgClick({
         link: this._link,
         title: this._title
       });
@@ -47,15 +67,17 @@ class Card {
   }
 
   // delete card
-  _deleteCard = () => {
-    const cardElementToDelete = this._buttonDelete.closest('.element');
-    cardElementToDelete.remove();
-  }
+  // _deleteCard = () => {
+  //   const cardElementToDelete = this._buttonDelete.closest('.element');
+  //   cardElementToDelete.remove();
+  // }
 
   // создаем карточку
   createCard = () => {
+    //console.log(this.cardId);
     this._cloneTemplateElement();
     this._takeElementsCard();
+    this._compareOwner();
     this._fillDataCard();
     this._setEventListeners();
     return this._cardNewElement;

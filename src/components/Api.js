@@ -36,6 +36,15 @@ export default class Api {
     .catch(this._catchError);
   }
 
+  deleteCardFromServer() {
+    return fetch(this._url, {
+      method: 'DELETE',
+      headers: this._headers
+    })
+    .then(this._handleResponse)
+    .catch(this._catchError);
+  }
+
   addProfileInfoToServer(dataNewAuthor) {
     return fetch(this._url, {
       method: 'PATCH',

@@ -2,11 +2,13 @@ import './index.css';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithSubmit from '../components/PopupWithSubmit.js';
 import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo';
 import Api from '../components/Api.js';
-import {popupTypeEditSelector,
+import {
+  popupTypeEditSelector,
   popupTypeAddSelector,
   popupTypeImageSelector,
   popupTypeConfirmSelector,
@@ -27,14 +29,43 @@ const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
 
 // ОБРАБОТЧИК КЛИКА ПО ИЗОБРАЖЕНИЮ КАРТОЧКИ (открытие попапа)
-function handleCardClick(data) {
-  const popupTypeImage = new PopupWithImage (data, popupTypeImageSelector);
-  popupTypeImage.open();
+
+const handlersCardClick = {
+  handleDeleteClick: (cardId, cardElement) => {
+    const popupTypeConfirm = new PopupWithSubmit(
+      function handlerSubmitForm () { // принять фукцию?
+
+        // ЗДЕСЬ ДЕЛАЕМ ЗАПРОС НА СЕРВЕР ДЛЯ УДАЛЕНИЯ КАРТОЧКИ
+
+        //https://mesto.nomoreparties.co/v1/cohort-26/cards/cardId
+
+        //console.log();
+        const deleteCard = new Api({
+          url: `https://mesto.nomoreparties.co/v1/cohort-26/cards/${cardId}`,
+          headers: {
+            authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
+            'Content-Type': 'application/json'
+          },
+        });
+        deleteCard.deleteCardFromServer();
+
+        //console.log(newCardElement);
+        cardElement.remove();
+        popupTypeConfirm.close();
+      },
+      popupTypeConfirmSelector);
+    popupTypeConfirm.open();
+  },
+  handleLikeClick: () => {},
+  handleImgClick: (data) => {
+    const popupTypeImage = new PopupWithImage(data, popupTypeImageSelector);
+    popupTypeImage.open();
+  }
 }
 
 // ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ с API
-function constructNewCard(data, templateSelector, handleCardClick) {
-  const newCard = new Card(data, templateSelector, handleCardClick);
+function constructNewCard(data, templateSelector, handlersCardClick) {
+  const newCard = new Card(data, templateSelector, handlersCardClick);
   return newCard.createCard();
 }
 
@@ -49,7 +80,7 @@ apiCards.getData().then(respons => {
     {
       items: respons,
       renderer: (item) => {
-        const newCard = constructNewCard(item, templateSelector, handleCardClick);
+        const newCard = constructNewCard(item, templateSelector, handlersCardClick);
         cardsList.addItem(newCard);
       }
     },
@@ -60,8 +91,8 @@ apiCards.getData().then(respons => {
 });
 
 // ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
-const popupTypeAdd = new PopupWithForm (
-  function handlerSubmitFormCard (dataCard) {
+const popupTypeAdd = new PopupWithForm(
+  function handlerSubmitFormCard(dataCard) {
     const newCardApi = new Api({
       url: 'https://mesto.nomoreparties.co/v1/cohort-26/cards',
       headers: {
@@ -71,8 +102,8 @@ const popupTypeAdd = new PopupWithForm (
     });
     const addNewServerCard = newCardApi.addCardToServer(dataCard);
     addNewServerCard.then(respons => {
-      const newCard = constructNewCard(respons, templateSelector, handleCardClick);
-      const cardsList = new Section({},containerForCardsSelector);
+      const newCard = constructNewCard(respons, templateSelector, handlersCardClick);
+      const cardsList = new Section({}, containerForCardsSelector);
       cardsList.addItem(newCard);
       popupTypeAdd.close();
       formCardValidator.toggleButtonState();
@@ -90,15 +121,15 @@ const getProfileInfoApi = new Api({
     authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
   }
 });
-  getProfileInfoApi.getData()
+getProfileInfoApi.getData()
   .then(respons => {
-  userInfo.setUserInfo(respons);
-  profileAvatar.src = respons.avatar;
-});
+    userInfo.setUserInfo(respons);
+    profileAvatar.src = respons.avatar;
+  });
 
 // ПОПАП АВТОРА API
-const popupTypeEdit = new PopupWithForm (
-  function handlerSubmitFormAuthor (dataAuthor) {
+const popupTypeEdit = new PopupWithForm(
+  function handlerSubmitFormAuthor(dataAuthor) {
     const serverProfile = new Api({
       url: 'https://mesto.nomoreparties.co/v1/cohort-26/users/me',
       headers: {
@@ -115,7 +146,7 @@ const popupTypeEdit = new PopupWithForm (
   popupTypeEditSelector);
 
 // ОТКРЫТИЕ ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
-function handlerClickButtonEdit () {
+function handlerClickButtonEdit() {
   popupTypeEdit.setInputValues(userInfo.getUserInfo());
   formAuthorValidator.clearErrorsMessage();
   popupTypeEdit.open();
@@ -128,3 +159,17 @@ buttonAdd.addEventListener('click', () => {
   popupTypeAdd.open();
 });
 
+
+
+
+
+
+
+
+// {
+//   data: { },
+//   handleCardClick: () => { },
+//   handleLikeClick: (card) => { },
+//   handleDeleteIconClick: (card) => { },
+//   templateSelector
+// }
