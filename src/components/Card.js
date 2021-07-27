@@ -1,5 +1,3 @@
-import { bind } from "core-js/core/function";
-
 class Card {
   constructor (data, templateSelector, {handleDeleteClick, handleLikeClick, handleImgClick}) {
     this._templateElement = document.querySelector(templateSelector).content;
@@ -68,7 +66,7 @@ class Card {
   // устанавливаем слушатели
   _setEventListeners = () => {
     this._buttonLike.addEventListener('click', () => {
-        this._handleLikeClick(); // КАК В ФУНКЦИЮ ПЕРЕДАТЬ ЭКЗЕМПЛЯР КЛАССА???
+        this._handleLikeClick().bind(this); // КАК В ФУНКЦИЮ ПЕРЕДАТЬ ЭКЗЕМПЛЯР КЛАССА???
     })
     if (this._flag) {
       console.log('Есть моя карточка');
