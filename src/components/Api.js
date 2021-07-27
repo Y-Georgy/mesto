@@ -4,62 +4,69 @@ export default class Api {
     this._headers = config.headers;
   }
 
-  getData() {
-    return fetch(this._url, {
-      headers: this._headers,
-    })
-    .then(this._handleResponse)
-    .catch(this._catchError);
-  }
-
   _handleResponse(res) {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(`Произошла ошибка: ${res.status}`);
   }
 
-  _catchError(err) {
-    console.log(err);
+  getCards() {
+    return fetch(`${this._url}/cards`, {
+      method: 'GET',
+      headers: this._headers,
+    })
+    .then(this._handleResponse)
   }
 
-  addCardToServer(dataCard) {
-    return fetch(this._url, {
+  addCard(dataCard) {
+    return fetch(`${this._url}/cards`, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify(dataCard)
     })
     .then(this._handleResponse)
-    .catch(this._catchError);
   }
 
-  deleteCardFromServer() {
-    return fetch(this._url, {
-      method: 'DELETE',
-      headers: this._headers
+  getProfile() {
+    return fetch(`${this._url}/users/me`, {
+      method: 'GET',
+      headers: this._headers,
     })
     .then(this._handleResponse)
-    .catch(this._catchError);
   }
 
-  addProfileInfoToServer(dataNewAuthor) {
-    return fetch(this._url, {
+  addProfile(dataNewAuthor) {
+    return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify(dataNewAuthor)
     })
     .then(this._handleResponse)
-    .catch(this._catchError);
   }
 
-  LikeCardApi(methodApi) {
-    return fetch(this._url, {
-      method: methodApi,
+  deleteCard(cardId) {
+    return fetch(`${this._url}/cards/${cardId}`, {
+      method: 'DELETE',
       headers: this._headers
     })
     .then(this._handleResponse)
-    .catch(this._catchError);
   }
 
+  deleteLike(cardId) {
+    return fetch(`${this._url}/cards/likes/${cardId}`, {
+      method: 'DELETE',
+      headers: this._headers
+    })
+    .then(this._handleResponse)
+  }
+
+  addLike(cardId) {
+    return fetch(`${this._url}/cards/likes/${cardId}`, {
+      method: 'PUT',
+      headers: this._headers
+    })
+    .then(this._handleResponse)
+  }
 
 }

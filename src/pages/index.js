@@ -28,39 +28,52 @@ formAuthorValidator.enableValidation();
 const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
 
-// ОБРАБОТЧИК КЛИКА ПО ИЗОБРАЖЕНИЮ КАРТОЧКИ (открытие попапа)
+// ---------- API -------------
+const api = new Api({
+  url: 'https://mesto.nomoreparties.co/v1/cohort-26',
+  headers: {
+    authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
+    'Content-Type': 'application/json'
+  }
+});
 
+// ОБРАБОТЧИК КЛИКА ПО ИЗОБРАЖЕНИЮ КАРТОЧКИ (открытие попапа)
 const handlersCardClick = {
   handleDeleteClick: (cardId, cardElement) => {
     const popupTypeConfirm = new PopupWithSubmit(
-      function handlerSubmitForm () {
-        const deleteCard = new Api({
-          url: `https://mesto.nomoreparties.co/v1/cohort-26/cards/${cardId}`,
-          headers: {
-            authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
-          },
-        });
-        deleteCard.deleteCardFromServer();
-        cardElement.remove();
-        popupTypeConfirm.close();
+      function handlerSubmitForm() {
+        api.deleteCard(cardId)
+          .then(res => {
+            if (res.message === "Пост удалён") {
+              cardElement.remove();
+              popupTypeConfirm.close();
+            }
+          })
+          .catch(rej => alert(rej));
+
       },
       popupTypeConfirmSelector);
     popupTypeConfirm.open();
   },
-  handleLikeClick: (cardId, likeActive) => {
-    const likeCard = new Api({
-      url: `https://mesto.nomoreparties.co/v1/cohort-26/cards/likes/${cardId}`,
-      headers: {
-        authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
-      },
-    });
-    if (likeActive) {
-      likeCard.LikeCardApi('DELETE')
-        .then(res => newCard.test(res));
-    } else {
-      likeCard.LikeCardApi('PUT')
-        .then(res => newCard.test(res));
-    }
+  // handleLikeClick: function(cardId, likeActive, setLikesInfo) {
+  //   if (likeActive) {
+  //     api.deleteLike(cardId)
+  //       .then(res => setLikesInfo(res)) // newCard -> undefined // setLikesInfo(likes)
+  //       //.catch(rej => alert(rej));
+  //   } else {
+  //     api.addLike(cardId)
+  //       .then(res => {
+  //         setLikesInfo(res); // newCard -> undefined
+  //       });
+  //       //.catch(rej => alert(rej));
+  //   }
+  // },
+  handleLikeClick: function() {
+      api.addLike('60ffd431e12f5500f2659b1b')
+        .then(res => {
+          this.setLikesInfo(res); // newCard -> undefined
+        });
+        //.catch(rej => alert(rej));
   },
   handleImgClick: (data) => {
     const popupTypeImage = new PopupWithImage(data, popupTypeImageSelector);
@@ -73,46 +86,34 @@ function constructNewCard(data, templateSelector, handlersCardClick) {
   const newCard = new Card(data, templateSelector, handlersCardClick);
   return newCard.createCard();
 }
-
-const apiCards = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-26/cards',
-  headers: {
-    authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
-  }
-});
-apiCards.getData().then(respons => {
-  const cardsList = new Section(
-    {
-      items: respons,
-      renderer: (item) => {
-        const newCard = constructNewCard(item, templateSelector, handlersCardClick);
-        cardsList.addItem(newCard);
-      }
-    },
-    containerForCardsSelector
-  );
-
-  cardsList.rendererItems();
-});
+api.getCards()
+  .then(respons => {
+    const cardsList = new Section(
+      {
+        items: respons,
+        renderer: (item) => {
+          const newCard = constructNewCard(item, templateSelector, handlersCardClick);
+          cardsList.addItem(newCard);
+        }
+      },
+      containerForCardsSelector
+    );
+    cardsList.rendererItems();
+  })
+  .catch(rej => alert(rej));
 
 // ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
 const popupTypeAdd = new PopupWithForm(
   function handlerSubmitFormCard(dataCard) {
-    const newCardApi = new Api({
-      url: 'https://mesto.nomoreparties.co/v1/cohort-26/cards',
-      headers: {
-        authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
-        'Content-Type': 'application/json'
-      },
-    });
-    const addNewServerCard = newCardApi.addCardToServer(dataCard);
-    addNewServerCard.then(respons => {
-      const newCard = constructNewCard(respons, templateSelector, handlersCardClick);
-      const cardsList = new Section({}, containerForCardsSelector);
-      cardsList.addItem(newCard);
-      popupTypeAdd.close();
-      formCardValidator.toggleButtonState();
-    });
+    api.addCard(dataCard)
+      .then(respons => {
+        const newCard = constructNewCard(respons, templateSelector, handlersCardClick);
+        const cardsList = new Section({}, containerForCardsSelector);
+        cardsList.addItemToTop(newCard);
+        popupTypeAdd.close();
+        formCardValidator.toggleButtonState();
+      })
+      .catch(rej => alert(rej));
   },
   popupTypeAddSelector);
 
@@ -120,33 +121,24 @@ const popupTypeAdd = new PopupWithForm(
 const userInfo = new UserInfo(dataProfileSelectors);
 
 // Получаем API данные профиля
-const getProfileInfoApi = new Api({
-  url: 'https://nomoreparties.co/v1/cohort-26/users/me',
-  headers: {
-    authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef'
-  }
-});
-getProfileInfoApi.getData()
+api.getProfile()
   .then(respons => {
     userInfo.setUserInfo(respons);
     profileAvatar.src = respons.avatar;
-  });
+  })
+  .catch(rej => alert(rej));
+
 
 // ПОПАП АВТОРА API
 const popupTypeEdit = new PopupWithForm(
   function handlerSubmitFormAuthor(dataAuthor) {
-    const serverProfile = new Api({
-      url: 'https://mesto.nomoreparties.co/v1/cohort-26/users/me',
-      headers: {
-        authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
-        'Content-Type': 'application/json'
-      }
-    });
-    const editServerProfile = serverProfile.addProfileInfoToServer(dataAuthor);
-    editServerProfile.then(respons => {
-      userInfo.setUserInfo(respons);
-      popupTypeEdit.close();
-    });
+    api.addProfile(dataAuthor)
+      .then(respons => {
+        userInfo.setUserInfo(respons);
+        popupTypeEdit.close();
+      })
+      .catch(rej => alert(rej));
+
   },
   popupTypeEditSelector);
 

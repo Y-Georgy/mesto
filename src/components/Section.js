@@ -12,6 +12,10 @@ class Section {
   }
 
   addItem = (item) => {
+    this._containerForAddItem.append(item);
+  }
+
+  addItemToTop = (item) => {
     this._containerForAddItem.prepend(item);
   }
 

@@ -1,3 +1,5 @@
+import { bind } from "core-js/core/function";
+
 class Card {
   constructor (data, templateSelector, {handleDeleteClick, handleLikeClick, handleImgClick}) {
     this._templateElement = document.querySelector(templateSelector).content;
@@ -41,23 +43,32 @@ class Card {
     this._imgElement.src = this._link;
     this._imgElement.alt = this._title;
     this._titleElement.textContent = this._title;
-    this._likeQuantity.textContent = this._likes.length;
+    this._updateLike();
   }
 
-  test(message) {
-    console.log(message)
+  _updateLike() {
+    this._likeQuantity.textContent = this._likes.length;
+    console.log(this._likes);
+  }
+
+  setLikesInfo(likes) {
+    // this._likes = likes;
+    // this._updateLike();
+    console.log(`Переменная res = ${likes}`);
+  }
+
+  isLiked() {
+    if (this._buttonLike.classList.contains('element__icon-like_active')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // устанавливаем слушатели
   _setEventListeners = () => {
     this._buttonLike.addEventListener('click', () => {
-      if (this._buttonLike.classList.contains('element__icon-like_active')) {
-        this._handleLikeClick(this.cardId, true);
-        this._buttonLike.classList.remove('element__icon-like_active');
-      } else {
-        this._handleLikeClick(this.cardId, false);
-        this._buttonLike.classList.add('element__icon-like_active');
-      }
+        this._handleLikeClick(); // КАК В ФУНКЦИЮ ПЕРЕДАТЬ ЭКЗЕМПЛЯР КЛАССА???
     })
     if (this._flag) {
       console.log('Есть моя карточка');
