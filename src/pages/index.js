@@ -69,11 +69,34 @@ const handlersCardClick = {
   //   }
   // },
   handleLikeClick: function() {
-      api.addLike('60ffd431e12f5500f2659b1b')
-        .then(res => {
-          this.setLikesInfo(res); // newCard -> undefined
-        });
-        //.catch(rej => alert(rej));
+    if (this.isLiked) {
+      api.deleteLike(this.cardId)
+        .then((res) => {
+        this._likes = res.likes;
+        console.log(this.isLiked());
+        this.updateLike();
+      })
+      .catch(rej => console(rej));
+    } else {
+      api.addLike(this.cardId)
+        .then((res) => {
+          this._likes = res.likes;
+          //console.log(this.isLiked());
+          this.updateLike();
+        })
+        .catch(rej => console(rej));
+    }
+    //const like = this.isLiked ? api.deleteLike(this.cardId) : api.addLike(this.cardId);
+    // console.log(`id в index ${this.cardId}`);
+
+    // like.then((res) => {
+    //       //this._likes = res.likes;
+    //       console.log(res);
+    //       this.updateLike();
+    //       //this.setLikesInfo(res.likes);
+    //       //console.log(res.likes);
+    //     })
+    //     .catch(rej => console(rej));
   },
   handleImgClick: (data) => {
     const popupTypeImage = new PopupWithImage(data, popupTypeImageSelector);

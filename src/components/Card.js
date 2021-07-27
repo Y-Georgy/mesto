@@ -4,12 +4,13 @@ class Card {
     this._title = data.name;
     this._link = data.link;
     this._handleImgClick = handleImgClick;
-    this._handleLikeClick = handleLikeClick;
+    this._handleLikeClick = handleLikeClick.bind(this);
     this._handleDeleteClick = handleDeleteClick;
     this._likes = data.likes;
     this._ownerId = data.owner._id;
     this.cardId = data._id
-    //this._data = data;
+    this._data = data;
+    this._myProfileId = '5e3543d6c22b20fed4882e3e';
   }
 
   // клонируем template
@@ -28,7 +29,7 @@ class Card {
 
   // сверяем id карточки и мой id
   _compareOwner = () => {
-    if (this._ownerId !== '5e3543d6c22b20fed4882e3e') {
+    if (this._ownerId !== this._myProfileId) {
       this._buttonDelete.remove();
       this._flag = false;
     } else {
@@ -41,32 +42,44 @@ class Card {
     this._imgElement.src = this._link;
     this._imgElement.alt = this._title;
     this._titleElement.textContent = this._title;
-    this._updateLike();
+    this.updateLike();
   }
 
-  _updateLike() {
+  updateLike() {
     this._likeQuantity.textContent = this._likes.length;
-    console.log(this._likes);
+    //console.log(this._data);
+    if (this.isLiked()) {
+      this._buttonLike.classList.add('element__icon-like_active');
+      console.log('Карточка лайкнута')
+    } else {
+      this._buttonLike.classList.remove('element__icon-like_active');
+      console.log('Карточка не лайкнута')
+    }
+
+
   }
 
-  setLikesInfo(likes) {
+  setLikesInfo() {
     // this._likes = likes;
     // this._updateLike();
-    console.log(`Переменная res = ${likes}`);
+    //console.log(`Переменная res = ${likes}`);
   }
 
   isLiked() {
-    if (this._buttonLike.classList.contains('element__icon-like_active')) {
-      return true;
-    } else {
-      return false;
-    }
+    return this._likes.some((item) => {
+      return item._id === this._myProfileId;
+    });
+    // if (this._buttonLike.classList.contains('element__icon-like_active')) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
 
   // устанавливаем слушатели
   _setEventListeners = () => {
     this._buttonLike.addEventListener('click', () => {
-        this._handleLikeClick().bind(this); // КАК В ФУНКЦИЮ ПЕРЕДАТЬ ЭКЗЕМПЛЯР КЛАССА???
+        this._handleLikeClick();
     })
     if (this._flag) {
       console.log('Есть моя карточка');
