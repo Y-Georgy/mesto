@@ -68,7 +68,7 @@ const handlersCardClick = {
   handleLikeClick: function() {
     const like = this.isLiked() ? api.deleteLike(this.cardId) : api.addLike(this.cardId);
     like.then((res) => {
-      this._likes = res.likes;
+      this.likes = res.likes;
       this.updateQuantityLike();
       this.toggleLikeIcon();
     })
@@ -82,108 +82,105 @@ const handlersCardClick = {
   }
 }
 
-// --- ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ с API ---- ------------------------------------------------------------------------------
+// конструктор карточек
 function constructNewCard(data, templateSelector, handlersCardClick) {
-  const newCard = new Card(data, templateSelector, handlersCardClick);
+  const userId = userInfo.getUserId();
+  console.log(userId);
+  const newCard = new Card(data, templateSelector, handlersCardClick, userId);
   return newCard.createCard();
 }
 
-api.getCards()
-  .then(respons => {
+// профиль
+const userInfo = new UserInfo(dataProfileSelectors);
+
+//-------------------- ЗАГРУЗКА ИНФОРМАЦИИ -----------------------
+Promise.all([api.getProfile(), api.getCards()])
+  .then(([profileInfo, cardsInfo]) => {
+
+    // заполнение профиля
+    userInfo.setUserInfo(profileInfo);
+    userInfo.updateAvatar(profileInfo.avatar)
+
+    // заполнение карточками
     const cardsList = new Section({
-      items: respons,
+      items: cardsInfo,
       renderer: (item) => {
         const newCard = constructNewCard(item, templateSelector, handlersCardClick);
         cardsList.addItem(newCard);
       }
     }, containerForCardsSelector);
     cardsList.rendererItems();
+
+    // ----- ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ -----
+    const popupTypeAdd = new PopupWithForm(
+      function handlerSubmitFormCard(dataCard) {
+        formCardValidator.changeButtonText('Создание...');
+        api.addCard(dataCard)
+          .then(respons => {
+            const newCard = constructNewCard(respons, templateSelector, handlersCardClick);
+            const cardsList = new Section({}, containerForCardsSelector);
+            cardsList.addItemToTop(newCard);
+          })
+          .catch(rej => console.log(rej))
+          .finally(() => {
+            popupTypeAdd.close();
+            formCardValidator.toggleButtonState();
+            formCardValidator.changeButtonText('Создать');
+          });
+      },
+      popupTypeAddSelector);
+
+    // --------------------- ПОПАП АВТОРА ------------------------
+    const popupTypeEdit = new PopupWithForm(
+      function handlerSubmitFormAuthor(dataAuthor) {
+        formAuthorValidator.changeButtonText('Сохранение...');
+        api.addProfile(dataAuthor)
+          .then(respons => {
+            userInfo.setUserInfo(respons);
+          })
+          .catch(rej => console.log(rej))
+          .finally(() => {
+            popupTypeEdit.close();
+            formAuthorValidator.changeButtonText('Сохранить');
+          });
+      },
+      popupTypeEditSelector);
+
+    // -------------------- ПОПАП АВАТАРКИ ------------------------
+    const popupTypeAvatar = new PopupWithForm(
+      function handlerSubmitFormAvatar(avatar) {
+        formAvatarValidator.changeButtonText('Сохранение...');
+        api.updateAvatar(avatar)
+          .then(({avatar}) => {
+            userInfo.updateAvatar(avatar);
+          })
+          .catch(rej => console.log(rej))
+          .finally(() => {
+            popupTypeAvatar.close();
+            formAvatarValidator.changeButtonText('Сохранить');
+          });
+      },
+      popupTypeAvatarSelector);
+
+    // ---------- ОТКРЫТИЕ ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ -----------
+    function handlerClickButtonEdit() {
+      popupTypeEdit.setInputValues(userInfo.getUserInfo());
+      formAuthorValidator.clearErrorsMessage();
+      popupTypeEdit.open();
+    }
+    buttonEdit.addEventListener('click', handlerClickButtonEdit);
+
+    // ------------ ОТКРЫТИЕ ПОПАПА ДОБАВЛЕНИЯ КАРТОЧКИ -------------
+    buttonAdd.addEventListener('click', () => {
+      formCardValidator.clearErrorsMessage();
+      popupTypeAdd.open();
+    });
+
+    //  ----------------- ОТКРЫТИЕ ПОПАПА АВАТАРКИ ------------------
+    avatarOverlay.addEventListener('click', () => {
+      formAvatarValidator.clearErrorsMessage();
+      formAvatarValidator.toggleButtonState();
+      popupTypeAvatar.open();
+    });
   })
-  .catch(rej => console.log(rej));
-
-// ----- ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ -----
-const popupTypeAdd = new PopupWithForm(
-  function handlerSubmitFormCard(dataCard) {
-    formCardValidator.changeButtonText('Создание...');
-    api.addCard(dataCard)
-      .then(respons => {
-        const newCard = constructNewCard(respons, templateSelector, handlersCardClick);
-        const cardsList = new Section({}, containerForCardsSelector);
-        cardsList.addItemToTop(newCard);
-      })
-      .catch(rej => console.log(rej))
-      .finally(() => {
-        popupTypeAdd.close();
-        formCardValidator.toggleButtonState();
-        formCardValidator.changeButtonText('Создать');
-      });
-  },
-  popupTypeAddSelector);
-
-// -------------------- ПРОФИЛЬ АВТОРА ----------------------------------------------------------------------------------------
-const userInfo = new UserInfo(dataProfileSelectors);
-
-// ------------- ПОЛУЧЕНИЕ ИНФОРМАЦИИ ОБ АВТОРЕ -------------
-api.getProfile()
-  .then(respons => {
-    userInfo.setUserInfo(respons);
-    userInfo.updateAvatar(respons.avatar)
-  })
-  .catch(rej => console.log(rej));
-
-
-// --------------------- ПОПАП АВТОРА ------------------------
-const popupTypeEdit = new PopupWithForm(
-  function handlerSubmitFormAuthor(dataAuthor) {
-    formAuthorValidator.changeButtonText('Сохранение...');
-    api.addProfile(dataAuthor)
-      .then(respons => {
-        userInfo.setUserInfo(respons);
-      })
-      .catch(rej => console.log(rej))
-      .finally(() => {
-        popupTypeEdit.close();
-        formAuthorValidator.changeButtonText('Сохранить');
-      });
-  },
-  popupTypeEditSelector);
-
-// -------------------- ПОПАП АВАТАРКИ ------------------------
-const popupTypeAvatar = new PopupWithForm(
-  function handlerSubmitFormAvatar(avatar) {
-    formAvatarValidator.changeButtonText('Сохранение...');
-    api.updateAvatar(avatar)
-      .then(({avatar}) => {
-        userInfo.updateAvatar(avatar);
-      })
-      .catch(rej => console.log(rej))
-      .finally(() => {
-        popupTypeAvatar.close();
-        formAvatarValidator.changeButtonText('Сохранить');
-      });
-  },
-  popupTypeAvatarSelector);
-
-// ---------- ОТКРЫТИЕ ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ -----------
-function handlerClickButtonEdit() {
-  popupTypeEdit.setInputValues(userInfo.getUserInfo());
-  formAuthorValidator.clearErrorsMessage();
-  popupTypeEdit.open();
-}
-buttonEdit.addEventListener('click', handlerClickButtonEdit);
-
-// ------------ ОТКРЫТИЕ ПОПАПА ДОБАВЛЕНИЯ КАРТОЧКИ -------------
-buttonAdd.addEventListener('click', () => {
-  formCardValidator.clearErrorsMessage();
-  popupTypeAdd.open();
-});
-
-//  ----------------- ОТКРЫТИЕ ПОПАПА АВАТАРКИ ------------------
-avatarOverlay.addEventListener('click', () => {
-  formAvatarValidator.clearErrorsMessage();
-  formAvatarValidator.toggleButtonState();
-  popupTypeAvatar.open();
-});
-
-
-// Объявить переменную с ID пользователя в глобальной видимости, а внутри функций переназначать этот id и тогда он будет доступен в глобальной области
+.catch(rej => console.log(rej));

@@ -3,6 +3,7 @@ export default class UserInfo {
     this._prifileTitle = document.querySelector(profileTitleSelector);
     this._prifileSubtitle = document.querySelector(profileSubtitleSelector);
     this._profileAvatar = document.querySelector(profileAvatarSelector);
+    this._profileId = '1';
   }
 
   getUserInfo () {
@@ -13,13 +14,17 @@ export default class UserInfo {
     return userData;
   }
 
-  setUserInfo ({name, about}) {
+  setUserInfo ({name, about, _id}) {
     this._prifileTitle.textContent = name;
     this._prifileSubtitle.textContent = about;
+    this._profileId = _id;
   }
 
   updateAvatar(avatarLink) {
     this._profileAvatar.src = avatarLink;
   }
 
+  getUserId() {
+    return this._profileId;
+  }
 }

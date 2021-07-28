@@ -1,16 +1,16 @@
 class Card {
-  constructor (data, templateSelector, {handleDeleteClick, handleLikeClick, handleImgClick}) {
+  constructor (data, templateSelector, {handleDeleteClick, handleLikeClick, handleImgClick}, userId) {
     this._templateElement = document.querySelector(templateSelector).content;
     this._title = data.name;
     this._link = data.link;
     this._handleImgClick = handleImgClick;
     this._handleLikeClick = handleLikeClick;
     this._handleDeleteClick = handleDeleteClick;
-    this._likes = data.likes;
+    this.likes = data.likes;
     this._ownerId = data.owner._id;
     this.cardId = data._id
     this._data = data;
-    this._myProfileId = '5e3543d6c22b20fed4882e3e';
+    this._myProfileId = userId;
   }
 
   // клонируем template
@@ -48,7 +48,7 @@ class Card {
 
   // обновляем кол-во лайков
   updateQuantityLike() {
-    this._likeQuantity.textContent = this._likes.length;
+    this._likeQuantity.textContent = this.likes.length;
   }
 
   toggleLikeIcon() {
@@ -61,7 +61,7 @@ class Card {
 
   // проверка лайка
   isLiked() {
-    return this._likes.some((item) => {
+    return this.likes.some((item) => {
       return item._id === this._myProfileId;
     });
   }
