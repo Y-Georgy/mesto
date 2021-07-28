@@ -58,6 +58,7 @@
 @import url(../blocks/element/__icon-delete/element__icon-delete.css);
 @import url(../blocks/element/__like-overlay/element__like-overlay.css);
 @import url(../blocks/element/__like-quantity/element__like-quantity.css);
+@import url(../blocks/element/__overlay-img/element__overlay-img.css);
 
 /* footer */
 @import url(../blocks/footer/footer.css);

@@ -21,6 +21,7 @@ class Card {
   // берем нужные элементы из разметки
   _takeElementsCard = () => {
     this._imgElement = this._cardNewElement.querySelector('.element__img');
+    this._overlayImgElement = this._cardNewElement.querySelector('.element__overlay-img');
     this._titleElement = this._cardNewElement.querySelector('.element__title');
     this._likeQuantity = this._cardNewElement.querySelector('.element__like-quantity');
     this._buttonLike = this._cardNewElement.querySelector('.element__icon-like');
@@ -76,7 +77,7 @@ class Card {
         this._handleDeleteClick(this.cardId, this._cardNewElement);
       });
     }
-    this._imgElement.addEventListener('click', () => {
+    this._overlayImgElement.addEventListener('click', () => {
       this._handleImgClick({
         link: this._link,
         title: this._title
