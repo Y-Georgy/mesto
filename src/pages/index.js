@@ -112,11 +112,10 @@ const userInfo = new UserInfo(dataProfileSelectors);
 // Получаем API данные профиля
 api.getProfile()
   .then(respons => {
-    console.log(response);
     userInfo.setUserInfo(respons);
     profileAvatar.src = respons.avatar;
   })
-  .catch(rej => console.log(`Это я - ${rej}`));
+  .catch(rej => console.log(rej));
 
 
 // ПОПАП АВТОРА API
