@@ -49,54 +49,20 @@ const handlersCardClick = {
               popupTypeConfirm.close();
             }
           })
-          .catch(rej => alert(rej));
+          .catch(rej => console.log(rej));
 
       },
       popupTypeConfirmSelector);
     popupTypeConfirm.open();
   },
-  // handleLikeClick: function(cardId, likeActive, setLikesInfo) {
-  //   if (likeActive) {
-  //     api.deleteLike(cardId)
-  //       .then(res => setLikesInfo(res)) // newCard -> undefined // setLikesInfo(likes)
-  //       //.catch(rej => alert(rej));
-  //   } else {
-  //     api.addLike(cardId)
-  //       .then(res => {
-  //         setLikesInfo(res); // newCard -> undefined
-  //       });
-  //       //.catch(rej => alert(rej));
-  //   }
-  // },
   handleLikeClick: function() {
-    if (this.isLiked) {
-      api.deleteLike(this.cardId)
-        .then((res) => {
-        this._likes = res.likes;
-        console.log(this.isLiked());
-        this.updateLike();
-      })
-      .catch(rej => console(rej));
-    } else {
-      api.addLike(this.cardId)
-        .then((res) => {
-          this._likes = res.likes;
-          //console.log(this.isLiked());
-          this.updateLike();
-        })
-        .catch(rej => console(rej));
-    }
-    //const like = this.isLiked ? api.deleteLike(this.cardId) : api.addLike(this.cardId);
-    // console.log(`id в index ${this.cardId}`);
-
-    // like.then((res) => {
-    //       //this._likes = res.likes;
-    //       console.log(res);
-    //       this.updateLike();
-    //       //this.setLikesInfo(res.likes);
-    //       //console.log(res.likes);
-    //     })
-    //     .catch(rej => console(rej));
+    const like = this.isLiked() ? api.deleteLike(this.cardId) : api.addLike(this.cardId);
+    like.then((res) => {
+      this._likes = res.likes;
+      this.updateQuantityLike();
+      this.toggleLikeIcon();
+    })
+    .catch(rej => console(rej));
   },
   handleImgClick: (data) => {
     const popupTypeImage = new PopupWithImage(data, popupTypeImageSelector);
@@ -123,7 +89,7 @@ api.getCards()
     );
     cardsList.rendererItems();
   })
-  .catch(rej => alert(rej));
+  .catch(rej => console.log(rej));
 
 // ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
 const popupTypeAdd = new PopupWithForm(
@@ -136,7 +102,7 @@ const popupTypeAdd = new PopupWithForm(
         popupTypeAdd.close();
         formCardValidator.toggleButtonState();
       })
-      .catch(rej => alert(rej));
+      .catch(rej => console.log(rej));
   },
   popupTypeAddSelector);
 
@@ -146,10 +112,11 @@ const userInfo = new UserInfo(dataProfileSelectors);
 // Получаем API данные профиля
 api.getProfile()
   .then(respons => {
+    console.log(response);
     userInfo.setUserInfo(respons);
     profileAvatar.src = respons.avatar;
   })
-  .catch(rej => alert(rej));
+  .catch(rej => console.log(`Это я - ${rej}`));
 
 
 // ПОПАП АВТОРА API
@@ -160,7 +127,7 @@ const popupTypeEdit = new PopupWithForm(
         userInfo.setUserInfo(respons);
         popupTypeEdit.close();
       })
-      .catch(rej => alert(rej));
+      .catch(rej => console.log(rej));
 
   },
   popupTypeEditSelector);

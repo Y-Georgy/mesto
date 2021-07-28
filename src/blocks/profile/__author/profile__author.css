@@ -1,5 +1,6 @@
 .profile__author {
   display: flex;
+  position: relative;
 }
 
 @media (max-width: 918px) {

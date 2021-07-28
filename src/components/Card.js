@@ -4,7 +4,7 @@ class Card {
     this._title = data.name;
     this._link = data.link;
     this._handleImgClick = handleImgClick;
-    this._handleLikeClick = handleLikeClick.bind(this);
+    this._handleLikeClick = handleLikeClick;
     this._handleDeleteClick = handleDeleteClick;
     this._likes = data.likes;
     this._ownerId = data.owner._id;
@@ -42,44 +42,33 @@ class Card {
     this._imgElement.src = this._link;
     this._imgElement.alt = this._title;
     this._titleElement.textContent = this._title;
-    this.updateLike();
+    this.updateQuantityLike();
   }
 
-  updateLike() {
+  // обновляем кол-во лайков
+  updateQuantityLike() {
     this._likeQuantity.textContent = this._likes.length;
-    //console.log(this._data);
+  }
+
+  toggleLikeIcon() {
     if (this.isLiked()) {
       this._buttonLike.classList.add('element__icon-like_active');
-      console.log('Карточка лайкнута')
     } else {
       this._buttonLike.classList.remove('element__icon-like_active');
-      console.log('Карточка не лайкнута')
     }
-
-
   }
 
-  setLikesInfo() {
-    // this._likes = likes;
-    // this._updateLike();
-    //console.log(`Переменная res = ${likes}`);
-  }
-
+  // проверка лайка
   isLiked() {
     return this._likes.some((item) => {
       return item._id === this._myProfileId;
     });
-    // if (this._buttonLike.classList.contains('element__icon-like_active')) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   }
 
   // устанавливаем слушатели
   _setEventListeners = () => {
     this._buttonLike.addEventListener('click', () => {
-        this._handleLikeClick();
+        this._handleLikeClick(this);
     })
     if (this._flag) {
       console.log('Есть моя карточка');
@@ -95,17 +84,6 @@ class Card {
     })
   }
 
-  // like card
-  // _likeCard = () => {
-  //   this._buttonLike.classList.toggle('element__icon-like_active');
-  // }
-
-  // delete card
-  // _deleteCard = () => {
-  //   const cardElementToDelete = this._buttonDelete.closest('.element');
-  //   cardElementToDelete.remove();
-  // }
-
   // создаем карточку
   createCard = () => {
     //console.log(this.cardId);
@@ -113,6 +91,7 @@ class Card {
     this._takeElementsCard();
     this._compareOwner();
     this._fillDataCard();
+    this.toggleLikeIcon();
     this._setEventListeners();
     return this._cardNewElement;
   }

@@ -1,0 +1,22 @@
+.profile__overlay-avatar {
+  width: 120px;
+  height: 120px;
+}
+
+.profile__overlay-avatar:hover {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  background-image: url(../../../images/pencil.svg);
+  background-size: 26px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media (max-width: 918px) {
+  .profile__avatar {
+    margin-right: 0;
+  }
+}
