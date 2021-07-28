@@ -72,7 +72,6 @@ class Card {
         this._handleLikeClick(this);
     })
     if (this._flag) {
-      console.log('Есть моя карточка');
       this._buttonDelete.addEventListener('click', () => {
         this._handleDeleteClick(this.cardId, this._cardNewElement);
       });
@@ -87,7 +86,6 @@ class Card {
 
   // создаем карточку
   createCard = () => {
-    //console.log(this.cardId);
     this._cloneTemplateElement();
     this._takeElementsCard();
     this._compareOwner();

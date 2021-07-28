@@ -22,7 +22,7 @@ import {
   containerForCardsSelector
 } from '../utils/constants.js';
 
-// ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
+// ------------- ЖИВАЯ ВАЛИДАЦИЯ ФОРМ -------------
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
 formAuthorValidator.enableValidation();
 
@@ -32,7 +32,7 @@ formCardValidator.enableValidation();
 const formAvatarValidator = new FormValidator(config, document.forms.formAvatar);
 formAvatarValidator.enableValidation();
 
-// ---------- API -------------
+// ---------------------- API ---------------------
 const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-26',
   headers: {
@@ -41,8 +41,10 @@ const api = new Api({
   }
 });
 
-// ОБРАБОТЧИК КЛИКА ПО ИЗОБРАЖЕНИЮ КАРТОЧКИ (открытие попапа)
+// ------------ ОБЪЕКТ С ОБРАБОТЧИКАМИ -------------
 const handlersCardClick = {
+
+  // обработчик удаления карточки
   handleDeleteClick: (cardId, cardElement) => {
     const popupTypeConfirm = new PopupWithSubmit(
       function handlerSubmitForm() {
@@ -53,12 +55,16 @@ const handlersCardClick = {
               popupTypeConfirm.close();
             }
           })
-          .catch(rej => console.log(rej));
-
+          .catch(rej => console.log(rej))
+          .finally(() => {
+            popupTypeConfirm.close();
+          });
       },
       popupTypeConfirmSelector);
     popupTypeConfirm.open();
   },
+
+  // обработчик лайка
   handleLikeClick: function() {
     const like = this.isLiked() ? api.deleteLike(this.cardId) : api.addLike(this.cardId);
     like.then((res) => {
@@ -68,34 +74,34 @@ const handlersCardClick = {
     })
     .catch(rej => console(rej));
   },
+
+  // обработчик клика по изображению карточки
   handleImgClick: (data) => {
     const popupTypeImage = new PopupWithImage(data, popupTypeImageSelector);
     popupTypeImage.open();
   }
 }
 
-// ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ с API
+// --- ДОБАВЛЯЕМ КАРТОЧКИ НА СТРАНИЦУ ПРИ ПЕРВОЙ ЗАГРУЗКЕ с API ---- ------------------------------------------------------------------------------
 function constructNewCard(data, templateSelector, handlersCardClick) {
   const newCard = new Card(data, templateSelector, handlersCardClick);
   return newCard.createCard();
 }
+
 api.getCards()
   .then(respons => {
-    const cardsList = new Section(
-      {
-        items: respons,
-        renderer: (item) => {
-          const newCard = constructNewCard(item, templateSelector, handlersCardClick);
-          cardsList.addItem(newCard);
-        }
-      },
-      containerForCardsSelector
-    );
+    const cardsList = new Section({
+      items: respons,
+      renderer: (item) => {
+        const newCard = constructNewCard(item, templateSelector, handlersCardClick);
+        cardsList.addItem(newCard);
+      }
+    }, containerForCardsSelector);
     cardsList.rendererItems();
   })
   .catch(rej => console.log(rej));
 
-// ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
+// ----- ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ -----
 const popupTypeAdd = new PopupWithForm(
   function handlerSubmitFormCard(dataCard) {
     formCardValidator.changeButtonText('Создание...');
@@ -114,10 +120,10 @@ const popupTypeAdd = new PopupWithForm(
   },
   popupTypeAddSelector);
 
-// ----------------- ПРОФИЛЬ АВТОРА ---------------------
+// -------------------- ПРОФИЛЬ АВТОРА ----------------------------------------------------------------------------------------
 const userInfo = new UserInfo(dataProfileSelectors);
 
-// Получаем API данные профиля
+// ------------- ПОЛУЧЕНИЕ ИНФОРМАЦИИ ОБ АВТОРЕ -------------
 api.getProfile()
   .then(respons => {
     userInfo.setUserInfo(respons);
@@ -126,7 +132,7 @@ api.getProfile()
   .catch(rej => console.log(rej));
 
 
-// ПОПАП АВТОРА API
+// --------------------- ПОПАП АВТОРА ------------------------
 const popupTypeEdit = new PopupWithForm(
   function handlerSubmitFormAuthor(dataAuthor) {
     formAuthorValidator.changeButtonText('Сохранение...');
@@ -142,7 +148,7 @@ const popupTypeEdit = new PopupWithForm(
   },
   popupTypeEditSelector);
 
-// ПОПАП АВАТАРКИ
+// -------------------- ПОПАП АВАТАРКИ ------------------------
 const popupTypeAvatar = new PopupWithForm(
   function handlerSubmitFormAvatar(avatar) {
     formAvatarValidator.changeButtonText('Сохранение...');
@@ -154,12 +160,11 @@ const popupTypeAvatar = new PopupWithForm(
       .finally(() => {
         popupTypeAvatar.close();
         formAvatarValidator.changeButtonText('Сохранить');
-        //toggleButtonState
       });
   },
   popupTypeAvatarSelector);
 
-// ОТКРЫТИЕ ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
+// ---------- ОТКРЫТИЕ ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ -----------
 function handlerClickButtonEdit() {
   popupTypeEdit.setInputValues(userInfo.getUserInfo());
   formAuthorValidator.clearErrorsMessage();
@@ -167,12 +172,13 @@ function handlerClickButtonEdit() {
 }
 buttonEdit.addEventListener('click', handlerClickButtonEdit);
 
-// ОТКРЫТИЕ ПОПАПА ДОБАВЛЕНИЯ КАРТОЧКИ
+// ------------ ОТКРЫТИЕ ПОПАПА ДОБАВЛЕНИЯ КАРТОЧКИ -------------
 buttonAdd.addEventListener('click', () => {
   formCardValidator.clearErrorsMessage();
   popupTypeAdd.open();
 });
 
+//  ----------------- ОТКРЫТИЕ ПОПАПА АВАТАРКИ ------------------
 avatarOverlay.addEventListener('click', () => {
   formAvatarValidator.clearErrorsMessage();
   formAvatarValidator.toggleButtonState();
@@ -180,6 +186,4 @@ avatarOverlay.addEventListener('click', () => {
 });
 
 
-// ПРОПИСАТЬ ВСЕМ FETCH`ам FINALLY - ТО ЧТО ВЫПОЛНИТСЯ В КОНЦЕ НЕ ЗАВИСИМО ОТ РЕЗУЛЬТАТА
 // Объявить переменную с ID пользователя в глобальной видимости, а внутри функций переназначать этот id и тогда он будет доступен в глобальной области
-// 1231231

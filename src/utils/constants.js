@@ -1,10 +1,11 @@
+// конфиг для валидации форм
 export const config = {
-  inputSelector: '.popup__input', // инпуты
-  inputErrorClass: 'popup__input_type_error', // красное подчеркивание ошибки
-  submitButtonSelector: '.popup__submit-button', // кнопка submit
-  inactiveButtonClass: 'popup__submit-button_disabled', // неактивная кнопка submit
-  errorClass: 'popup__error_visible', // вывод ошибки
-  errorSelector: '.popup__error' // селектор ошибок
+  inputSelector: '.popup__input',
+  inputErrorClass: 'popup__input_type_error',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_disabled',
+  errorClass: 'popup__error_visible',
+  errorSelector: '.popup__error'
 };
 
 // профиль автора
