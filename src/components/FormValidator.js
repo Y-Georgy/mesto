@@ -43,6 +43,12 @@ class FormValidator {
     this._buttonElement.removeAttribute('disabled');
   }
 
+  // Меняем текст кнопки
+  changeButtonText = (text) => {
+    this._buttonElement.textContent = text;
+  }
+
+
   // проверка всех инпутов формы - true если хоть один из инпутов формы невалиден
   _checkInputsValid = () => {
     return this._inputElements.some((inputElement) => {

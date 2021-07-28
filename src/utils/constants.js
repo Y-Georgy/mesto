@@ -1,31 +1,3 @@
-// массив с данными карточек elements
-// export const initialCards = [
-//   {
-//     name: 'Архыз',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-//   },
-//   {
-//     name: 'Челябинская область',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-//   },
-//   {
-//     name: 'Иваново',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-//   },
-//   {
-//     name: 'Камчатка',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-//   },
-//   {
-//     name: 'Холмогорский район',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-//   },
-//   {
-//     name: 'Байкал',
-//     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-//   }
-// ];
-
 export const config = {
   inputSelector: '.popup__input', // инпуты
   inputErrorClass: 'popup__input_type_error', // красное подчеркивание ошибки
@@ -39,10 +11,11 @@ export const config = {
 const profile = document.querySelector('.profile');
 export const dataProfileSelectors = {
   profileTitleSelector: '.profile__title',
-  profileSubtitleSelector: '.profile__subtitle'
+  profileSubtitleSelector: '.profile__subtitle',
+  profileAvatarSelector: '.profile__avatar'
 }
 // аватар
-export const profileAvatar = document.querySelector('.profile__avatar');
+export const avatarOverlay = document.querySelector('.profile__overlay-avatar');
 
 // кнопки
 export const buttonEdit = profile.querySelector('.profile__edit-button');
@@ -53,6 +26,7 @@ export const popupTypeEditSelector = '.popup_type_edit';
 export const popupTypeAddSelector = '.popup_type_add';
 export const popupTypeImageSelector = '.popup_type_image';
 export const popupTypeConfirmSelector = '.popup_type_confirm';
+export const popupTypeAvatarSelector = '.popup_type_avatar';
 
 // контейнер для карточек
 export const containerForCardsSelector = '.elements__list';

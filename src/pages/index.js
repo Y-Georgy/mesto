@@ -12,13 +12,14 @@ import {
   popupTypeAddSelector,
   popupTypeImageSelector,
   popupTypeConfirmSelector,
+  popupTypeAvatarSelector,
+  avatarOverlay,
   dataProfileSelectors,
   config,
   buttonEdit,
   buttonAdd,
   templateSelector,
-  containerForCardsSelector,
-  profileAvatar
+  containerForCardsSelector
 } from '../utils/constants.js';
 
 // ЖИВАЯ ВАЛИДАЦИЯ ФОРМ
@@ -28,9 +29,12 @@ formAuthorValidator.enableValidation();
 const formCardValidator = new FormValidator(config, document.forms.formCard);
 formCardValidator.enableValidation();
 
+const formAvatarValidator = new FormValidator(config, document.forms.formAvatar);
+formAvatarValidator.enableValidation();
+
 // ---------- API -------------
 const api = new Api({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-26',
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-26',
   headers: {
     authorization: 'ef9c4dff-4cef-417b-a4dd-85f6d4ba3fef',
     'Content-Type': 'application/json'
@@ -94,15 +98,19 @@ api.getCards()
 // ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ
 const popupTypeAdd = new PopupWithForm(
   function handlerSubmitFormCard(dataCard) {
+    formCardValidator.changeButtonText('Создание...');
     api.addCard(dataCard)
       .then(respons => {
         const newCard = constructNewCard(respons, templateSelector, handlersCardClick);
         const cardsList = new Section({}, containerForCardsSelector);
         cardsList.addItemToTop(newCard);
+      })
+      .catch(rej => console.log(rej))
+      .finally(() => {
         popupTypeAdd.close();
         formCardValidator.toggleButtonState();
-      })
-      .catch(rej => console.log(rej));
+        formCardValidator.changeButtonText('Создать');
+      });
   },
   popupTypeAddSelector);
 
@@ -113,7 +121,7 @@ const userInfo = new UserInfo(dataProfileSelectors);
 api.getProfile()
   .then(respons => {
     userInfo.setUserInfo(respons);
-    profileAvatar.src = respons.avatar;
+    userInfo.updateAvatar(respons.avatar)
   })
   .catch(rej => console.log(rej));
 
@@ -121,15 +129,35 @@ api.getProfile()
 // ПОПАП АВТОРА API
 const popupTypeEdit = new PopupWithForm(
   function handlerSubmitFormAuthor(dataAuthor) {
+    formAuthorValidator.changeButtonText('Сохранение...');
     api.addProfile(dataAuthor)
       .then(respons => {
         userInfo.setUserInfo(respons);
-        popupTypeEdit.close();
       })
-      .catch(rej => console.log(rej));
-
+      .catch(rej => console.log(rej))
+      .finally(() => {
+        popupTypeEdit.close();
+        formAuthorValidator.changeButtonText('Сохранить');
+      });
   },
   popupTypeEditSelector);
+
+// ПОПАП АВАТАРКИ
+const popupTypeAvatar = new PopupWithForm(
+  function handlerSubmitFormAvatar(avatar) {
+    formAvatarValidator.changeButtonText('Сохранение...');
+    api.updateAvatar(avatar)
+      .then(({avatar}) => {
+        userInfo.updateAvatar(avatar);
+      })
+      .catch(rej => console.log(rej))
+      .finally(() => {
+        popupTypeAvatar.close();
+        formAvatarValidator.changeButtonText('Сохранить');
+        //toggleButtonState
+      });
+  },
+  popupTypeAvatarSelector);
 
 // ОТКРЫТИЕ ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ
 function handlerClickButtonEdit() {
@@ -145,8 +173,13 @@ buttonAdd.addEventListener('click', () => {
   popupTypeAdd.open();
 });
 
+avatarOverlay.addEventListener('click', () => {
+  formAvatarValidator.clearErrorsMessage();
+  formAvatarValidator.toggleButtonState();
+  popupTypeAvatar.open();
+});
 
-// ПЕРЕНЕСТИ ВСЕ .CATCH ИЗ КЛАССА API В INDEX.JS И ПОСТАВИТЬ ПОСЛЕ ПОСЛЕДНЕГО .THEN!!!
+
 // ПРОПИСАТЬ ВСЕМ FETCH`ам FINALLY - ТО ЧТО ВЫПОЛНИТСЯ В КОНЦЕ НЕ ЗАВИСИМО ОТ РЕЗУЛЬТАТА
 // Объявить переменную с ID пользователя в глобальной видимости, а внутри функций переназначать этот id и тогда он будет доступен в глобальной области
 // 1231231
