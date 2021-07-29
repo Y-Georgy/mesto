@@ -85,7 +85,6 @@ const handlersCardClick = {
 // конструктор карточек
 function constructNewCard(data, templateSelector, handlersCardClick) {
   const userId = userInfo.getUserId();
-  console.log(userId);
   const newCard = new Card(data, templateSelector, handlersCardClick, userId);
   return newCard.createCard();
 }
