@@ -73,7 +73,7 @@ class Card {
     })
     if (this._flag) {
       this._buttonDelete.addEventListener('click', () => {
-        this._handleDeleteClick(this.cardId, this._cardNewElement);
+        this._handleDeleteClick(this);
       });
     }
     this._overlayImgElement.addEventListener('click', () => {
@@ -93,6 +93,10 @@ class Card {
     this.toggleLikeIcon();
     this._setEventListeners();
     return this._cardNewElement;
+  }
+
+  removeCard() {
+    this._cardNewElement.remove();
   }
 }
 

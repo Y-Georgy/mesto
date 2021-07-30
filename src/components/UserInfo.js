@@ -3,7 +3,7 @@ export default class UserInfo {
     this._prifileTitle = document.querySelector(profileTitleSelector);
     this._prifileSubtitle = document.querySelector(profileSubtitleSelector);
     this._profileAvatar = document.querySelector(profileAvatarSelector);
-    this._profileId = '1';
+    this._profileId = '';
   }
 
   getUserInfo () {

@@ -22,15 +22,10 @@ import {
   containerForCardsSelector
 } from '../utils/constants.js';
 
-// ------------- ЖИВАЯ ВАЛИДАЦИЯ ФОРМ -------------
+// -------------- ВАЛИДАЦИЯ ФОРМ LIVE--------------
 const formAuthorValidator = new FormValidator(config, document.forms.formAuthor);
-formAuthorValidator.enableValidation();
-
 const formCardValidator = new FormValidator(config, document.forms.formCard);
-formCardValidator.enableValidation();
-
 const formAvatarValidator = new FormValidator(config, document.forms.formAvatar);
-formAvatarValidator.enableValidation();
 
 // ---------------------- API ---------------------
 const api = new Api({
@@ -41,27 +36,32 @@ const api = new Api({
   }
 });
 
+// ПОПАП С ИЗОБРАЖЕНИЕМ КАРТОЧКИ
+const popupTypeImage = new PopupWithImage(popupTypeImageSelector);
+popupTypeImage.setEventListeners();
+
+// ПОПАП С ПОДТВЕРЖДЕНИЕМ УДАЛЕНИЯ КАРТОЧКИ
+const popupTypeConfirm = new PopupWithSubmit(
+  function handlerSubmitForm(card) {
+    //console.log(card.cardId);
+    api.deleteCard(card.cardId)
+      .then(res => {
+        if (res.message === "Пост удалён") {
+          card.removeCard();
+          popupTypeConfirm.close();
+        }
+      })
+      .catch(rej => console.log(rej));
+  },
+  popupTypeConfirmSelector);
+popupTypeConfirm.setEventListeners();
+
 // ------------ ОБЪЕКТ С ОБРАБОТЧИКАМИ -------------
 const handlersCardClick = {
 
   // обработчик удаления карточки
-  handleDeleteClick: (cardId, cardElement) => {
-    const popupTypeConfirm = new PopupWithSubmit(
-      function handlerSubmitForm() {
-        api.deleteCard(cardId)
-          .then(res => {
-            if (res.message === "Пост удалён") {
-              cardElement.remove();
-              popupTypeConfirm.close();
-            }
-          })
-          .catch(rej => console.log(rej))
-          .finally(() => {
-            popupTypeConfirm.close();
-          });
-      },
-      popupTypeConfirmSelector);
-    popupTypeConfirm.open();
+  handleDeleteClick: function() {
+    popupTypeConfirm.open(this);
   },
 
   // обработчик лайка
@@ -77,8 +77,7 @@ const handlersCardClick = {
 
   // обработчик клика по изображению карточки
   handleImgClick: (data) => {
-    const popupTypeImage = new PopupWithImage(data, popupTypeImageSelector);
-    popupTypeImage.open();
+    popupTypeImage.open(data);
   }
 }
 
@@ -101,14 +100,13 @@ Promise.all([api.getProfile(), api.getCards()])
     userInfo.updateAvatar(profileInfo.avatar)
 
     // заполнение карточками
-    const cardsList = new Section({
-      items: cardsInfo,
-      renderer: (item) => {
+    const cardsList = new Section(
+      function renderer(item) {
         const newCard = constructNewCard(item, templateSelector, handlersCardClick);
         cardsList.addItem(newCard);
-      }
-    }, containerForCardsSelector);
-    cardsList.rendererItems();
+      },
+      containerForCardsSelector);
+    cardsList.rendererItems(cardsInfo);
 
     // ----- ПОПАП ДОБАВЛЕНИЯ НОВОЙ КАРТОЧКИ ПОЛЬЗОВАТЕЛЯ -----
     const popupTypeAdd = new PopupWithForm(
@@ -117,17 +115,16 @@ Promise.all([api.getProfile(), api.getCards()])
         api.addCard(dataCard)
           .then(respons => {
             const newCard = constructNewCard(respons, templateSelector, handlersCardClick);
-            const cardsList = new Section({}, containerForCardsSelector);
             cardsList.addItemToTop(newCard);
-          })
-          .catch(rej => console.log(rej))
-          .finally(() => {
             popupTypeAdd.close();
             formCardValidator.toggleButtonState();
             formCardValidator.changeButtonText('Создать');
-          });
+          })
+          .catch(rej => console.log(rej));
       },
       popupTypeAddSelector);
+    popupTypeAdd.setEventListeners();
+
 
     // --------------------- ПОПАП АВТОРА ------------------------
     const popupTypeEdit = new PopupWithForm(
@@ -136,14 +133,14 @@ Promise.all([api.getProfile(), api.getCards()])
         api.addProfile(dataAuthor)
           .then(respons => {
             userInfo.setUserInfo(respons);
-          })
-          .catch(rej => console.log(rej))
-          .finally(() => {
             popupTypeEdit.close();
             formAuthorValidator.changeButtonText('Сохранить');
-          });
+          })
+          .catch(rej => console.log(rej));
       },
       popupTypeEditSelector);
+    popupTypeEdit.setEventListeners();
+
 
     // -------------------- ПОПАП АВАТАРКИ ------------------------
     const popupTypeAvatar = new PopupWithForm(
@@ -152,14 +149,13 @@ Promise.all([api.getProfile(), api.getCards()])
         api.updateAvatar(avatar)
           .then(({avatar}) => {
             userInfo.updateAvatar(avatar);
-          })
-          .catch(rej => console.log(rej))
-          .finally(() => {
             popupTypeAvatar.close();
             formAvatarValidator.changeButtonText('Сохранить');
-          });
+          })
+          .catch(rej => console.log(rej));
       },
       popupTypeAvatarSelector);
+    popupTypeAvatar.setEventListeners();
 
     // ---------- ОТКРЫТИЕ ПОПАПА РЕДАКТИРОВАНИЯ ПРОФИЛЯ -----------
     function handlerClickButtonEdit() {
@@ -182,4 +178,10 @@ Promise.all([api.getProfile(), api.getCards()])
       popupTypeAvatar.open();
     });
   })
-.catch(rej => console.log(rej));
+.catch(rej => console.log(rej))
+.finally(() => {
+  // запуск валидации
+  formCardValidator.enableValidation();
+  formAuthorValidator.enableValidation();
+  formAvatarValidator.enableValidation();
+});

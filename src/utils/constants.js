@@ -4,8 +4,7 @@ export const config = {
   inputErrorClass: 'popup__input_type_error',
   submitButtonSelector: '.popup__submit-button',
   inactiveButtonClass: 'popup__submit-button_disabled',
-  errorClass: 'popup__error_visible',
-  errorSelector: '.popup__error'
+  errorClass: 'popup__error_visible'
 };
 
 // профиль автора

@@ -4,7 +4,6 @@ class FormValidator {
     this._buttonElement = formElement.querySelector(config.submitButtonSelector); // кнопка сабмит
     this._inputElements = Array.from(formElement.querySelectorAll(config.inputSelector)); // все инпуты
     this._configForm = config; // объект с классами формы
-    this._popupErrorList = Array.from(this._formElement.querySelectorAll(config.errorSelector)); // массив всех ошибок
     this._popupInputList = Array.from(this._formElement.querySelectorAll(config.inputSelector)); // массив всех инпутов
   }
 
@@ -16,6 +15,7 @@ class FormValidator {
     inputElement.classList.add(this._configForm.inputErrorClass);
     error.classList.add(this._configForm.errorClass);
   };
+
   // скрываю сообщение об ошибке
   _hideErrorMessage = (inputElement) => {
     const error = this._formElement.querySelector(`.${inputElement.id}-error`);
@@ -23,6 +23,7 @@ class FormValidator {
     inputElement.classList.remove(this._configForm.inputErrorClass);
     error.classList.remove(this._configForm.errorClass);
   }
+
   // проверяю валиден ли инпут
   _checkInputValidity = (inputElement) => {
     if (inputElement.validity.valid) {
@@ -47,7 +48,6 @@ class FormValidator {
   changeButtonText = (text) => {
     this._buttonElement.textContent = text;
   }
-
 
   // проверка всех инпутов формы - true если хоть один из инпутов формы невалиден
   _checkInputsValid = () => {
@@ -77,20 +77,12 @@ class FormValidator {
 
   // публичный метод валидации всех форм
   enableValidation = () => {
-    // this._formElement.addEventListener('submit', (evt) => {
-    //   evt.preventDefault();
-    // });
     this._setInputListeners();
   }
 
   // функция очистки ошибок валидации
   clearErrorsMessage = () => {
-    this._popupErrorList.forEach((popupError) => {
-      popupError.textContent = "";
-    });
-    this._popupInputList.forEach((popupInput) => {
-      popupInput.classList.remove(this._configForm.inputErrorClass);
-    });
+    this._popupInputList.forEach(this._hideErrorMessage);
   }
 }
 

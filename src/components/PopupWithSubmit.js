@@ -9,20 +9,20 @@ export default class PopupWithSubmit extends Popup {
 
   _handlerSubmit = (evt) => {
     evt.preventDefault();
-    this._handlerSubmitForm(); // передать функцию?
+    this._handlerSubmitForm(this.card);
   }
 
-  _setEventListeners () {
-    super._setEventListeners();
+  setEventListeners () {
+    super.setEventListeners();
     this._formElement.addEventListener('submit', this._handlerSubmit);
-  }
-
-  _removeEventListeners () {
-    this._formElement.removeEventListener('submit', this._handlerSubmit);
   }
 
   close () {
     super.close();
-    this._removeEventListeners;
+  }
+
+  open(card) {
+    super.open();
+    this.card = card;
   }
 }
