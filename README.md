@@ -27,7 +27,6 @@
 - API
 - ES6-классы
 - Деструктуризация
-- ООП
 ```
 
 ![N|Solid](https://img.shields.io/badge/-©%202021-red)
